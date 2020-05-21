@@ -66,7 +66,7 @@
     <Compile Include="Services\ComparatorService.cs" />
     <Compile Include="Services\EstimateModelService.cs" />
     <Compile Include="Services\ModelReportingService.cs" />
-    <Compile Include="Services\ReportModelService.cs" />
+    <Compile Include="Services\ClientReportService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

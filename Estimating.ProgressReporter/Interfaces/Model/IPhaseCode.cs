@@ -34,7 +34,7 @@ namespace Estimating.ProgressReporter.Interfaces.Model
         string FullPhaseCode { get; set; }
         string PhaseCodeSuffix { get; set; }
         PhaseCodeCategory PhaseCodePrefix { get; set; }
-        int EstimatedHours { get; set; }
+        double EstimatedHours { get; set; }
         DateTime DateCompleted { get; set; }
 
     }
