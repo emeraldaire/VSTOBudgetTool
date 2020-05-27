@@ -10,6 +10,7 @@ using Estimating.ProgressReporter.Model;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Estimating.VSTO.Reporting;
+using System.Runtime.CompilerServices;
 
 namespace Estimating.VSTO
 {
@@ -17,7 +18,12 @@ namespace Estimating.VSTO
     {
         private void RibbonBudgetTab_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadJobNumbers();
+            
+
         }
+
+       
 
         /// <summary>
         /// Opens a file dialog window for the user to select the CSV Field Report that will be processed.
@@ -40,6 +46,7 @@ namespace Estimating.VSTO
             if(importResult == DialogResult.OK)
             {
                 //TODO: Get jobnumber from user. 
+                //string jobNumber = cbJobNumber.Items.
                 string jobNumber ="2170507";
 
                 // MAIN PROGRAM
@@ -119,6 +126,27 @@ namespace Estimating.VSTO
             MessageBox.Show("Saving Estimate Data");
             //TODO: Insert processing methods here OR call to the main processing method.  
         }
+
+
+        private void LoadJobNumbers()
+        {
+            RibbonDropDownItem item = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
+            item.Label = "2170507";
+            cbJobNumber.Items.Add(item);
+
+            RibbonDropDownItem item2 = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
+            item2.Label = "2180608";
+            ddJobNumber.Items.Add(item2);
+
+
+            RibbonDropDownItem item3 = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
+            item3.Label = "2170507";
+            ddJobNumber.Items.Add(item3);
+            //Set the focus
+
+
+        }
+
 
         #region "Dummy Code"
         private List<SystemReport> GenerateFakeReportList()
