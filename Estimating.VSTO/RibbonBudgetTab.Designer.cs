@@ -38,20 +38,22 @@
             this.BudgetTab = this.Factory.CreateRibbonTab();
             this.ExportGroup = this.Factory.CreateRibbonGroup();
             this.group1 = this.Factory.CreateRibbonGroup();
-            this.cbJobNumber = this.Factory.CreateRibbonComboBox();
-            this.btnSaveEstimateToDatabase = this.Factory.CreateRibbonButton();
+            this.txtJobNumber = this.Factory.CreateRibbonEditBox();
+            this.JobInfoGroup = this.Factory.CreateRibbonGroup();
             this.btnImportFieldReport = this.Factory.CreateRibbonButton();
             this.btnSaveCompletedReport = this.Factory.CreateRibbonButton();
-            this.ddJobNumber = this.Factory.CreateRibbonDropDown();
+            this.btnSaveEstimateToDatabase = this.Factory.CreateRibbonButton();
             this.BudgetTab.SuspendLayout();
             this.ExportGroup.SuspendLayout();
             this.group1.SuspendLayout();
+            this.JobInfoGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // BudgetTab
             // 
-            this.BudgetTab.Groups.Add(this.ExportGroup);
+            this.BudgetTab.Groups.Add(this.JobInfoGroup);
             this.BudgetTab.Groups.Add(this.group1);
+            this.BudgetTab.Groups.Add(this.ExportGroup);
             this.BudgetTab.Label = "Budget";
             this.BudgetTab.Name = "BudgetTab";
             // 
@@ -63,26 +65,21 @@
             // 
             // group1
             // 
-            this.group1.Items.Add(this.ddJobNumber);
-            this.group1.Items.Add(this.cbJobNumber);
             this.group1.Items.Add(this.btnImportFieldReport);
             this.group1.Items.Add(this.btnSaveCompletedReport);
             this.group1.Label = "Report";
             this.group1.Name = "group1";
             // 
-            // cbJobNumber
+            // txtJobNumber
             // 
-            this.cbJobNumber.Label = "Job Number";
-            this.cbJobNumber.Name = "cbJobNumber";
+            this.txtJobNumber.Label = "Job Number";
+            this.txtJobNumber.Name = "txtJobNumber";
             // 
-            // btnSaveEstimateToDatabase
+            // JobInfoGroup
             // 
-            this.btnSaveEstimateToDatabase.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnSaveEstimateToDatabase.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveEstimateToDatabase.Image")));
-            this.btnSaveEstimateToDatabase.Label = "Save Estimate";
-            this.btnSaveEstimateToDatabase.Name = "btnSaveEstimateToDatabase";
-            this.btnSaveEstimateToDatabase.ShowImage = true;
-            this.btnSaveEstimateToDatabase.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveEstimateToDatabase_Click);
+            this.JobInfoGroup.Items.Add(this.txtJobNumber);
+            this.JobInfoGroup.Label = "Job Information";
+            this.JobInfoGroup.Name = "JobInfoGroup";
             // 
             // btnImportFieldReport
             // 
@@ -101,10 +98,14 @@
             this.btnSaveCompletedReport.ShowImage = true;
             this.btnSaveCompletedReport.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveCompletedReport_Click);
             // 
-            // ddJobNumber
+            // btnSaveEstimateToDatabase
             // 
-            this.ddJobNumber.Label = "dropDown1";
-            this.ddJobNumber.Name = "ddJobNumber";
+            this.btnSaveEstimateToDatabase.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnSaveEstimateToDatabase.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveEstimateToDatabase.Image")));
+            this.btnSaveEstimateToDatabase.Label = "Save Estimate";
+            this.btnSaveEstimateToDatabase.Name = "btnSaveEstimateToDatabase";
+            this.btnSaveEstimateToDatabase.ShowImage = true;
+            this.btnSaveEstimateToDatabase.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveEstimateToDatabase_Click);
             // 
             // RibbonBudgetTab
             // 
@@ -118,6 +119,8 @@
             this.ExportGroup.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.JobInfoGroup.ResumeLayout(false);
+            this.JobInfoGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -130,8 +133,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnImportFieldReport;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveEstimateToDatabase;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSaveCompletedReport;
-        internal Microsoft.Office.Tools.Ribbon.RibbonComboBox cbJobNumber;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown ddJobNumber;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup JobInfoGroup;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox txtJobNumber;
     }
 
     partial class ThisRibbonCollection

@@ -36,6 +36,9 @@ namespace Estimating.VSTO
         /// <param name="e"></param>
         private void btnImportFieldReport_Click(object sender, RibbonControlEventArgs e)
         {
+            //Validate the job number before opening the file dialog window.
+
+
             OpenFileDialog ImportFieldReportDialog = new OpenFileDialog()
             {
                 Filter = "CSV Files (*.csv)|*.csv",
@@ -130,19 +133,19 @@ namespace Estimating.VSTO
 
         private void LoadJobNumbers()
         {
-            RibbonDropDownItem item = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
-            item.Label = "2170507";
-            cbJobNumber.Items.Add(item);
+            //RibbonDropDownItem item = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
+            //item.Label = "2170507";
+            //cbJobNumber.Items.Add(item);
 
-            RibbonDropDownItem item2 = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
-            item2.Label = "2180608";
-            ddJobNumber.Items.Add(item2);
+            //RibbonDropDownItem item2 = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
+            //item2.Label = "2180608";
+            //ddJobNumber.Items.Add(item2);
 
 
-            RibbonDropDownItem item3 = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
-            item3.Label = "2170507";
-            ddJobNumber.Items.Add(item3);
-            //Set the focus
+            //RibbonDropDownItem item3 = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
+            //item3.Label = "2170507";
+            //ddJobNumber.Items.Add(item3);
+            ////Set the focus
 
 
         }
