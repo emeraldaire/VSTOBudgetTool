@@ -19,7 +19,6 @@ namespace Estimating.CSVHandler
                 var records = csv.GetRecords<PhaseCodeRecord>();
             }
             
-            //This is my first note
 
         }
     }

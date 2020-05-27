@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Estimating.ProgressReporter.Interfaces.Model
+namespace Estimating.ProgressReporter.Model
 {
     public class ComparatorResult
     {

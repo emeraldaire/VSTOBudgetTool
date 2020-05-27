@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Estimating.ProgressReporter.Interfaces.Model;
+using Estimating.ProgressReporter.Model;
+using Estimating.ProgressReporter.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,9 +19,12 @@ namespace Estimating.ProgressReporter.Repository
     /// </remarks>
     public interface IDataRepository
     {
-         
+        EstimateModel EstimateModel { get; set; }
+        ReportModel ReportModel { get; set; }
+        string JobNumber { get; set; }
 
+        void LoadRepositories();
 
-
+        
     }
 }

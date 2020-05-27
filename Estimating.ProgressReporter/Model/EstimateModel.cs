@@ -1,11 +1,12 @@
-﻿using Estimating.ProgressReporter.Model;
+﻿using Estimating.ProgressReporter.Interfaces.Model;
+using Estimating.ProgressReporter.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Estimating.ProgressReporter.Interfaces.Model
+namespace Estimating.ProgressReporter.Model
 {
     public class EstimateModel : ISystemModel<SystemEstimate>
     {
@@ -14,6 +15,10 @@ namespace Estimating.ProgressReporter.Interfaces.Model
         public List<SystemEstimate> Systems { get; set; }
        
         //Constructors
+        /// <summary>
+        /// Generate an Estimate Model with an empty system list.
+        /// </summary>
+        /// <param name="jobNumber"></param>
         public EstimateModel(string jobNumber)
         {
             JobNumber = jobNumber;
@@ -21,6 +26,11 @@ namespace Estimating.ProgressReporter.Interfaces.Model
             Systems = new List<SystemEstimate>();
         }
 
+        /// <summary>
+        /// Generate an Estimate Model with a populated system list.
+        /// </summary>
+        /// <param name="jobNumber"></param>
+        /// <param name="systemEstimates"></param>
         public EstimateModel(string jobNumber, List<SystemEstimate> systemEstimates)
         {
             JobNumber = jobNumber;

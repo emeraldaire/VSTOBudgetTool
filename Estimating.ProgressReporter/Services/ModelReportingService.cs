@@ -14,20 +14,29 @@ namespace Estimating.ProgressReporter.Services
 {
     public class ModelReportingService : IModelReportingService
     {
-        public EstimateModel _estimateModel { get; set; }
-        public ReportModel _reportModel { get; set; }
+        private EstimateModel estimateModel { get; set; }
+        private ReportModel reportModel { get; set; }
 
-        private ComparatorReport ModelReport;
+        private ComparatorReport ModelReport { get; set; }
 
         //CONSTRUCTOR
-        public ModelReportingService(EstimateModel estimateModel, ReportModel reportModel)
+        public static ModelReportingService LoadModelReportingService(EstimateModel estimateModel, ReportModel reportModel)
         {
-            _reportModel = reportModel;
-            _estimateModel = estimateModel;
+            ModelReportingService modelReportingService = new ModelReportingService();
+
+            modelReportingService.reportModel = reportModel;
+            modelReportingService.estimateModel = estimateModel;
             try
-            { GenerateModelReport(); }
+            { modelReportingService.GenerateModelReport(); }
             catch(Exception e)
             { Console.WriteLine(e.Message); }
+
+            return modelReportingService;
+
+        }
+
+        public ModelReportingService()
+        {
         }
 
         //public ModelReportingService(EstimateModel estimateModel, ReportModel reportModel)
@@ -41,7 +50,7 @@ namespace Estimating.ProgressReporter.Services
         {
             try
             {   
-                ComparatorReport comparatorReport = new ComparatorReport(_estimateModel, _reportModel);
+                ComparatorReport comparatorReport = new ComparatorReport(estimateModel, reportModel);
                 comparatorReport.GenerateReport();
                 ModelReport = comparatorReport;
             }
@@ -124,7 +133,7 @@ namespace Estimating.ProgressReporter.Services
 
         /// <summary>
         /// Returns a list of SystemEstimate objects for systems that were not included in the field report.  Naturally, all of these systems are 
-        /// unfinished.
+        /// are reported as unfinished.
         /// </summary>
         /// <returns></returns>
         public List<SystemEstimate> GetUnreportedSystems()
@@ -140,6 +149,23 @@ namespace Estimating.ProgressReporter.Services
                 throw new ModelReportWasEmptyException();
             }
         }
+
+        /// <summary>
+        /// Returns the completed ModelReport if it exists.
+        /// </summary>
+        /// <returns></returns>
+        public ComparatorReport GetCompleteModelReport()
+        {
+            if(ModelReport != null )
+            {
+                return ModelReport;
+            }
+            else
+            {
+                throw new Exception("The model report has not been generated.  Please make sure the object exists before trying to retrieve it.");
+            }
+        }
+
 
     }
 }

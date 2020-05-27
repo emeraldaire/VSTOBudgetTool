@@ -213,10 +213,11 @@ namespace DebuggerControl
                 reportModel.Systems.Add(ECorridorSupply);
 
 
-                //MODELREPORTINGSERVICE
-                //With both the ReportModel and EstimateModel complete, we can run the reporting tool by creating the ModelReportingService.  Upon
-                //creation, the ModelReportingService will run the data comparisons and everything will be ready to be queried. 
-                ModelReportingService modelReportingService = new ModelReportingService(estimateModel, reportModel);
+            //MODELREPORTINGSERVICE
+            //With both the ReportModel and EstimateModel complete, we can run the reporting tool by creating the ModelReportingService.  Upon
+            //creation, the ModelReportingService will run the data comparisons and everything will be ready to be queried. 
+            //ModelReportingService modelReportingService = new ModelReportingService(estimateModel, reportModel);
+            ModelReportingService modelReportingService = ModelReportingService.LoadModelReportingService(estimateModel, reportModel);
 
                 //We can now query the objects contained in the modelReportingService.  The following information is available: 
                 //  List<SystemEstimate> GetUnreportedSystems() - a list of systems for which there were no phase codes in the field report.

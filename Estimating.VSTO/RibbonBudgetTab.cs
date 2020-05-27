@@ -5,8 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Estimating.ProgressReporter.Services;
+using Estimating.ProgressReporter.Model;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
+using Estimating.VSTO.Reporting;
 
 namespace Estimating.VSTO
 {
@@ -17,7 +20,7 @@ namespace Estimating.VSTO
         }
 
         /// <summary>
-        /// Opens a file dialog window for the user to select the CSV Field Report that will processed.
+        /// Opens a file dialog window for the user to select the CSV Field Report that will be processed.
         /// </summary>
         /// <remarks>
         /// Uses CSV filter because validation of file extensions has not currently been implemented in the processing
@@ -36,8 +39,38 @@ namespace Estimating.VSTO
             DialogResult importResult = ImportFieldReportDialog.ShowDialog();
             if(importResult == DialogResult.OK)
             {
+                //TODO: Get jobnumber from user. 
+                string jobNumber ="2170507";
+
+                // MAIN PROGRAM
+                // ***************************************************
+                //1.  READ THE CSV FILE INTO MEMORY.
+
+                //Get the selected file path. 
                 string selectedFile = ImportFieldReportDialog.FileName;
-                //TODO: insert the report processing codes here OR call the main processing method using the captured filepath.
+                // Use the CSVDataService to process the file contents and produce a list of SystemReport objects.  
+                
+
+
+                // ***************************************************
+                //2.  USE THE CLIENT REPORT SERVICE TO RUN AND RETURN THE REPORT OBJECT.
+                //Note:  To get this far, the field report must have already been validated and processed into a List of SystemReport objects. 
+                //Create the report service. 
+                ClientReportService clientReportService = new ClientReportService(jobNumber);
+                //Send the field report list to the report service to generate the full summary report object.  
+                ComparatorReport finishedReport = clientReportService.GetReportSummary(GenerateFakeReportList());
+
+
+
+                // ***************************************************
+                //3.  DISPLAY THE PREFERRED DATA FROM THE REPORT OBJECT.
+                //Send the report object to the data display service.
+                DataDisplayService dataDisplayService = DataDisplayService.LoadDataObject(finishedReport);
+
+
+
+
+
             }
         }
 
@@ -86,5 +119,58 @@ namespace Estimating.VSTO
             MessageBox.Show("Saving Estimate Data");
             //TODO: Insert processing methods here OR call to the main processing method.  
         }
+
+        #region "Dummy Code"
+        private List<SystemReport> GenerateFakeReportList()
+        {
+            List<SystemReport> fakeReportedSystemList = new List<SystemReport>();
+
+            SystemReport garagefans = new SystemReport("GF-1")
+            {
+                PhaseCodes = new List<PhaseCode>()
+                {
+                    new PhaseCode("0001-0701"),
+                    new PhaseCode("0001-0601"),
+                    new PhaseCode("0001-0401")
+                }
+            };
+
+            //Partially complete; there were four phase codes in the estimate, but only two of them are being reported.
+            SystemReport ETrashExhaust = new SystemReport("T-E")
+            {
+                PhaseCodes = new List<PhaseCode>()
+                {
+                    new PhaseCode("0001-0701"),
+                    new PhaseCode("0001-0601"),
+                    new PhaseCode("0001-0501")
+                },
+
+            };
+
+            //Partially complete; there were two phase codes in the estimate, but only one of them is being reported.
+            SystemReport ECorridorSupply = new SystemReport("RTU-1")
+            {
+                PhaseCodes = new List<PhaseCode>()
+                {
+                    new PhaseCode("0001-0701"),
+                },
+
+            };
+
+            fakeReportedSystemList.Add(garagefans);
+            fakeReportedSystemList.Add(ETrashExhaust);
+            fakeReportedSystemList.Add(ECorridorSupply);
+
+            return fakeReportedSystemList;
+
+        }
+
+
+
+        #endregion
+
+
+
+
     }
 }

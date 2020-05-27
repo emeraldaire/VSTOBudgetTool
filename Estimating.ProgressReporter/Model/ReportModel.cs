@@ -1,11 +1,12 @@
-﻿using Estimating.ProgressReporter.Model;
+﻿using Estimating.ProgressReporter.Interfaces.Model;
+using Estimating.ProgressReporter.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Estimating.ProgressReporter.Interfaces.Model
+namespace Estimating.ProgressReporter.Model
 {
     public class ReportModel : ISystemModel<SystemReport>
     {

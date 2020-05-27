@@ -60,13 +60,22 @@
     <Compile Include="Model\SystemEstimate.cs" />
     <Compile Include="Model\SystemReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\DataRepository.cs" />
+    <Compile Include="Repository\IDataRepos.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="Repository\IModelDataRepository.cs" />
     <Compile Include="Repository\IReportDataRepository.cs" />
+    <Compile Include="Repository\ModelDataRepository.cs" />
+    <Compile Include="Repository\ReportDataRepository.cs" />
     <Compile Include="Services\ComparatorService.cs" />
+    <Compile Include="Services\EstimateDataService.cs" />
     <Compile Include="Services\EstimateModelService.cs" />
+    <Compile Include="Services\IEstimateDataService.cs" />
+    <Compile Include="Services\IModelReportingService.cs" />
+    <Compile Include="Services\IReportDataService.cs" />
     <Compile Include="Services\ModelReportingService.cs" />
     <Compile Include="Services\ClientReportService.cs" />
+    <Compile Include="Services\ReportDataService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

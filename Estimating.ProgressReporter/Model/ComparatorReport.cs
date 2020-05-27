@@ -8,7 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Estimating.ProgressReporter.Interfaces.Model
+namespace Estimating.ProgressReporter.Model
+
 {
     /// <summary>
     /// Contains lists of ComparatorResult and EstimateModel objects; Represents the result of the comparison.
@@ -30,6 +31,11 @@ namespace Estimating.ProgressReporter.Interfaces.Model
             _estimateModel = EstimateModel;
             _reportModel = ReportModel;
             _reportDictionary = _reportModel.Systems.ToDictionary(p => p.Name, p => p);
+        }
+
+        public ComparatorReport()
+        {
+
         }
 
         public void GenerateReport()

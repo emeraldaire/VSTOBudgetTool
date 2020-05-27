@@ -182,6 +182,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Reporting\DataDisplayService.cs" />
     <Compile Include="RibbonBudgetTab.cs">
       <SubType>Component</SubType>
     </Compile>
