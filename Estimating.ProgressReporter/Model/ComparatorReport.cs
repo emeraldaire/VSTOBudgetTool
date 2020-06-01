@@ -38,7 +38,11 @@ namespace Estimating.ProgressReporter.Model
 
         }
 
-        public void GenerateReport()
+        /// <summary>
+        /// Generates a ComparatorResult object for each system associated with the job, both reported and unreported.  Each ComparatorResult object 
+        /// is added to the list of ReportedSystems or the list of UnreportedSystems. 
+        /// </summary>
+        public void GenerateSystemReport()
         {
             SystemReport reportedSystem;
             foreach(SystemEstimate s in _estimateModel.Systems)

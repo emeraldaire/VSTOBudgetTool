@@ -10,7 +10,9 @@ using Estimating.ProgressReporter.Model;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Estimating.VSTO.Reporting;
+using Estimating.VSTO.Helpers;
 using System.Runtime.CompilerServices;
+using Estimating.CSVHandler;
 
 namespace Estimating.VSTO
 {
@@ -18,12 +20,10 @@ namespace Estimating.VSTO
     {
         private void RibbonBudgetTab_Load(object sender, RibbonUIEventArgs e)
         {
-            LoadJobNumbers();
+            
             
 
         }
-
-       
 
         /// <summary>
         /// Opens a file dialog window for the user to select the CSV Field Report that will be processed.
@@ -36,52 +36,63 @@ namespace Estimating.VSTO
         /// <param name="e"></param>
         private void btnImportFieldReport_Click(object sender, RibbonControlEventArgs e)
         {
-            //Validate the job number before opening the file dialog window.
+            //Validate and assign the job number before opening the file dialog window.  Validation is 
+            //performed by the JobNumberValidation object upon instantiation. 
+            JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text);
 
-
-            OpenFileDialog ImportFieldReportDialog = new OpenFileDialog()
+            if (validationControl.IsValidJobNumber)
             {
-                Filter = "CSV Files (*.csv)|*.csv",
-                Title = "Select a Field Report"
-            };
+                //Grab the validated job number.
+                string jobNumber = txtJobNumber.Text;
 
-            DialogResult importResult = ImportFieldReportDialog.ShowDialog();
-            if(importResult == DialogResult.OK)
-            {
-                //TODO: Get jobnumber from user. 
-                //string jobNumber = cbJobNumber.Items.
-                string jobNumber ="2170507";
+                OpenFileDialog ImportFieldReportDialog = new OpenFileDialog()
+                {
+                    Filter = "CSV Files (*.csv)|*.csv",
+                    Title = "Select a Field Report"
+                };
 
-                // MAIN PROGRAM
-                // ***************************************************
-                //1.  READ THE CSV FILE INTO MEMORY.
+                DialogResult importResult = ImportFieldReportDialog.ShowDialog();
+                if (importResult == DialogResult.OK)
+                {
+                    // MAIN PROGRAM
+                    // ***************************************************
+                    //1.  READ THE CSV FILE INTO MEMORY.
+                    //Get the selected file path. 
+                    string selectedFile = ImportFieldReportDialog.FileName;
+                    // Use the CSVHelper to process the file contents and produce a list of SystemReport objects.  
+                    CSVHelper csvHelper = new CSVHelper();
+                    List<SystemReport> reportedSystems = csvHelper.GetReportedSystemList(selectedFile);
 
-                //Get the selected file path. 
-                string selectedFile = ImportFieldReportDialog.FileName;
-                // Use the CSVDataService to process the file contents and produce a list of SystemReport objects.  
-                
+                    if (reportedSystems != null || reportedSystems.Count != 0)
+                    {
+                        // ***************************************************
+                        //2.  USE THE CLIENT REPORT SERVICE TO RUN AND RETURN THE REPORT OBJECT.
+                        //Note:  To get this far, the field report must have already been validated and processed into a List of SystemReport objects. 
+                        //Create the report service. 
+                        ClientReportService clientReportService = new ClientReportService(jobNumber);
+                        //Send the field report system list to the report service to generate the full summary report object.  
+                        ComparatorReport finishedReport = clientReportService.GetReportSummary(reportedSystems);
 
+                      
 
-                // ***************************************************
-                //2.  USE THE CLIENT REPORT SERVICE TO RUN AND RETURN THE REPORT OBJECT.
-                //Note:  To get this far, the field report must have already been validated and processed into a List of SystemReport objects. 
-                //Create the report service. 
-                ClientReportService clientReportService = new ClientReportService(jobNumber);
-                //Send the field report list to the report service to generate the full summary report object.  
-                ComparatorReport finishedReport = clientReportService.GetReportSummary(GenerateFakeReportList());
+                        // ***************************************************
+                        //3.  DISPLAY THE PREFERRED DATA FROM THE REPORT OBJECT.
+                        //Send the report object to the data display service.
+                        DataDisplayService dataDisplayService = DataDisplayService.LoadDataObject(finishedReport); 
+                    }
+                    else
+                    {
+                        MessageBox.Show("No system data was found in the report. Please check the imported file and verify that Phase Code and Equipment System data are present in the file before trying again.  If problem persists, please contact Technical Support.", "No Data Found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        throw new Exception("Reporting service returned a blank or null system report list to the Main program without throwing a validation error.  Please check the CSVHelper class to make sure that type conversions are working properly.");
+                    }
 
-
-
-                // ***************************************************
-                //3.  DISPLAY THE PREFERRED DATA FROM THE REPORT OBJECT.
-                //Send the report object to the data display service.
-                DataDisplayService dataDisplayService = DataDisplayService.LoadDataObject(finishedReport);
-
-
-
-
-
+                } 
             }
+            else
+            {
+                //throw new Exception("Validation Failed");
+            }
+
         }
 
         /// <summary>
@@ -130,25 +141,8 @@ namespace Estimating.VSTO
             //TODO: Insert processing methods here OR call to the main processing method.  
         }
 
+        
 
-        private void LoadJobNumbers()
-        {
-            //RibbonDropDownItem item = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
-            //item.Label = "2170507";
-            //cbJobNumber.Items.Add(item);
-
-            //RibbonDropDownItem item2 = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
-            //item2.Label = "2180608";
-            //ddJobNumber.Items.Add(item2);
-
-
-            //RibbonDropDownItem item3 = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
-            //item3.Label = "2170507";
-            //ddJobNumber.Items.Add(item3);
-            ////Set the focus
-
-
-        }
 
 
         #region "Dummy Code"

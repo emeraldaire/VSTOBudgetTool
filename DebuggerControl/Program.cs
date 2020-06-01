@@ -5,7 +5,7 @@ using Estimating.PseudoDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Estimating.CSVHandler;
@@ -32,10 +32,14 @@ namespace DebuggerControl
             // Run through Configuration Manager scenarios.
             //GetConfigurationValues();
             //GetConfigurationValuesBySection();
-            GetConnectionStrings();
-            Console.ReadLine();
+            //GetConnectionStrings();
+            //Console.ReadLine();
             // *************************************************************
+            string phaseCode = "0001-0901";
+            string prefix = phaseCode.Substring(0, 4);
+            string suffix = phaseCode.Substring(5, 4);
 
+            Console.ReadLine();
             ////Uncomment the two lines below to run the walkthrough example.
             //WalkthroughExample walkthrough = new WalkthroughExample();
             //walkthrough.PerformWalkthroughExample();
@@ -81,6 +85,7 @@ namespace DebuggerControl
 
             //    Console.ReadLine();
 
+           
 
         }
 

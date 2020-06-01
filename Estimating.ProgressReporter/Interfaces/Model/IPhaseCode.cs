@@ -11,15 +11,19 @@ namespace Estimating.ProgressReporter.Interfaces.Model
     {
         Equipment, 
         SpecialTeams, 
-        GRD
+        GRD,
+        Unclassified,
+        Custom,
     }
 
     public enum PhaseCodeCategory
     {
         //    0001,
         Normal,
-        //    0009
-        Extra
+        //    9000
+        ChangeOrder,
+        //    Other
+        Unclassified
     }
 
     /// <summary>
@@ -31,11 +35,14 @@ namespace Estimating.ProgressReporter.Interfaces.Model
     /// </remarks>
     public interface IPhaseCode
     {
-        string FullPhaseCode { get; set; }
-        string PhaseCodeSuffix { get; set; }
-        PhaseCodeCategory PhaseCodePrefix { get; set; }
+        string AssociatedSystem { get; set; }
+        string FullPhaseCode { get; }
+        string PhaseCodeSuffix { get;}
+        string PhaseCodePrefix { get; }
+        PhaseCodeCategory PhaseCodeCategory { get;}
+        PhaseCodeType PhaseCodeType { get; }
         double EstimatedHours { get; set; }
-        DateTime DateCompleted { get; set; }
+        DateTime DateReported { get; }
 
     }
 }

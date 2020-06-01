@@ -156,6 +156,8 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Helpers\CSVHelper.cs" />
+    <Compile Include="Helpers\JobNumberValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -201,6 +203,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Estimating.CSVHandler\Estimating.CSVHandler.csproj">
+      <Project>{37F21A16-E43A-42DC-8455-D3BD2FB2B2FA}</Project>
+      <Name>Estimating.CSVHandler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Estimating.ProgressReporter\Estimating.ProgressReporter.csproj">
       <Project>{ce3dee14-d281-4b45-8776-89cd04c644cb}</Project>
       <Name>Estimating.ProgressReporter</Name>

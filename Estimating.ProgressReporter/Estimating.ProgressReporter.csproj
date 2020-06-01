@@ -43,11 +43,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DummyFactory.cs" />
+    <Compile Include="Enums\CostCodeProjectionStatus.cs" />
+    <Compile Include="Enums\UnitOfMeasurement.cs" />
     <Compile Include="Errors\ModelReportWasEmptyException.cs" />
     <Compile Include="Errors\SystemNameMismatchException.cs" />
     <Compile Include="Interfaces\Services\ISystemModelService.cs" />
     <Compile Include="Model\ComparatorReport.cs" />
     <Compile Include="Model\ComparatorResult.cs" />
+    <Compile Include="Model\CostCodeReport.cs" />
+    <Compile Include="Model\CostCodeResult.cs" />
     <Compile Include="Model\EstimateModel.cs" />
     <Compile Include="Interfaces\Model\ISystemEstimate.cs" />
     <Compile Include="Interfaces\Model\IPhaseCode.cs" />
@@ -65,9 +69,11 @@
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="Repository\IModelDataRepository.cs" />
     <Compile Include="Repository\IReportDataRepository.cs" />
+    <Compile Include="Repository\JobNumberRepository.cs" />
     <Compile Include="Repository\ModelDataRepository.cs" />
     <Compile Include="Repository\ReportDataRepository.cs" />
     <Compile Include="Services\ComparatorService.cs" />
+    <Compile Include="Services\CostCodeDataService.cs" />
     <Compile Include="Services\EstimateDataService.cs" />
     <Compile Include="Services\EstimateModelService.cs" />
     <Compile Include="Services\IEstimateDataService.cs" />

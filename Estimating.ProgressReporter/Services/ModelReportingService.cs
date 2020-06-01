@@ -51,7 +51,7 @@ namespace Estimating.ProgressReporter.Services
             try
             {   
                 ComparatorReport comparatorReport = new ComparatorReport(estimateModel, reportModel);
-                comparatorReport.GenerateReport();
+                comparatorReport.GenerateSystemReport();
                 ModelReport = comparatorReport;
             }
             catch (Exception e)

@@ -45,6 +45,7 @@
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,8 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSVDataService.cs" />
+    <Compile Include="CSVFileValidationResult.cs" />
     <Compile Include="ICSVDataService.cs" />
-    <Compile Include="PhaseCodeRecord.cs" />
+    <Compile Include="PhaseCodeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
