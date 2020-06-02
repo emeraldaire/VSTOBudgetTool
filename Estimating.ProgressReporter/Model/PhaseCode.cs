@@ -56,7 +56,7 @@ namespace Estimating.ProgressReporter.Model
             switch (phaseCodePrefix)
             {
                 case "0001":
-                    return PhaseCodeCategory.Normal;
+                    return PhaseCodeCategory.BuildingTrades;
                 case "9001":
                     return PhaseCodeCategory.ChangeOrder;
                 default:
@@ -69,21 +69,21 @@ namespace Estimating.ProgressReporter.Model
             switch(phaseCodeSuffix)
             {
                 case "0201":
-                    return PhaseCodeType.Unclassified;
+                    return PhaseCodeType.FieldLayout;
                 case "0301":
-                    return PhaseCodeType.Unclassified;
+                    return PhaseCodeType.MatHandlingShop;
                 case "0401":
-                    return PhaseCodeType.GRD;
+                    return PhaseCodeType.GRDInstall;
                 case "0501":
-                    return PhaseCodeType.Unclassified;
+                    return PhaseCodeType.EquipmentRental;
                 case "0601":
-                    return PhaseCodeType.SpecialTeams;
+                    return PhaseCodeType.SpecialTeamsDetailing;
                 case "0701":
-                    return PhaseCodeType.Unclassified;
+                    return PhaseCodeType.AirBalance;
                 case "0801":
-                    return PhaseCodeType.Unclassified;
+                    return PhaseCodeType.DuctInstallation;
                 case "0901":
-                    return PhaseCodeType.Equipment;
+                    return PhaseCodeType.EquipmentInstall;
                 default:
                     return PhaseCodeType.Custom;
             }

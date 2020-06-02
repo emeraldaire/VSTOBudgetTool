@@ -20,9 +20,7 @@ namespace Estimating.VSTO
     {
         private void RibbonBudgetTab_Load(object sender, RibbonUIEventArgs e)
         {
-            
-            
-
+            //Do nothing
         }
 
         /// <summary>
