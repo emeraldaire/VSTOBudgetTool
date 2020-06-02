@@ -14,12 +14,20 @@ namespace Estimating.ProgressReporter.Interfaces.Model
         GRD,
         Unclassified,
         Custom,
+
     }
 
     public enum PhaseCodeCategory
     {
+        //9900 
+        ZBCode,
+        //0004,
+        Residential,
+        //0003
+        LightCommercial,
+        
         //    0001,
-        Normal,
+        BuildingTrades,
         //    9000
         ChangeOrder,
         //    Other

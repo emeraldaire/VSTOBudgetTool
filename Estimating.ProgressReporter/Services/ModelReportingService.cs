@@ -14,18 +14,19 @@ namespace Estimating.ProgressReporter.Services
 {
     public class ModelReportingService : IModelReportingService
     {
-        private EstimateModel estimateModel { get; set; }
-        private ReportModel reportModel { get; set; }
+        private EstimateModel _estimateModel { get; set; }
+        private ReportModel _reportModel { get; set; }
 
         private ComparatorReport ModelReport { get; set; }
+        private CostCodeReport CostCodeReport { get; set; }
 
         //CONSTRUCTOR
         public static ModelReportingService LoadModelReportingService(EstimateModel estimateModel, ReportModel reportModel)
         {
             ModelReportingService modelReportingService = new ModelReportingService();
 
-            modelReportingService.reportModel = reportModel;
-            modelReportingService.estimateModel = estimateModel;
+            modelReportingService._reportModel = reportModel;
+            modelReportingService._estimateModel = estimateModel;
             try
             { modelReportingService.GenerateModelReport(); }
             catch(Exception e)
@@ -35,6 +36,10 @@ namespace Estimating.ProgressReporter.Services
 
         }
 
+        public ModelReportingService(ReportModel reportModel)
+        {
+            _reportModel = reportModel;
+        }
         public ModelReportingService()
         {
         }
@@ -50,13 +55,31 @@ namespace Estimating.ProgressReporter.Services
         {
             try
             {   
-                ComparatorReport comparatorReport = new ComparatorReport(estimateModel, reportModel);
+                ComparatorReport comparatorReport = new ComparatorReport(_estimateModel, _reportModel);
                 comparatorReport.GenerateSystemReport();
                 ModelReport = comparatorReport;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="jobNumber"></param>
+        public void GenerateCostCodeReport(string jobNumber)
+        {
+            try
+            {
+                CostCodeReport costCodeReport = new CostCodeReport(jobNumber, _reportModel);
+                costCodeReport.GenerateCostCodeReport();
+                CostCodeReport = costCodeReport;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
 
@@ -151,7 +174,7 @@ namespace Estimating.ProgressReporter.Services
         }
 
         /// <summary>
-        /// Returns the completed ModelReport if it exists.
+        /// Returns the completed ModelReport if it exists; otherwise, returns null.
         /// </summary>
         /// <returns></returns>
         public ComparatorReport GetCompleteModelReport()
@@ -162,7 +185,23 @@ namespace Estimating.ProgressReporter.Services
             }
             else
             {
-                throw new Exception("The model report has not been generated.  Please make sure the object exists before trying to retrieve it.");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns the completed CostCodeReport if it has been populated; otherwise, returns null.
+        /// </summary>
+        /// <returns></returns>
+        public CostCodeReport GetCompleteCostCodeReport()
+        {
+            if (CostCodeReport != null)
+            {
+                return CostCodeReport;
+            }
+            else
+            {
+                return null;
             }
         }
 

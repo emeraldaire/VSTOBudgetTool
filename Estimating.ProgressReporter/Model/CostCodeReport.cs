@@ -13,8 +13,8 @@ namespace Estimating.ProgressReporter.Model
 
     public class CostCodeReport
     {
+        private string _jobNumber;
         private CostCodeDataService _costCodeDataService;
-        private EstimateModel _estimateModel;
         private ReportModel _reportModel;
        // private Dictionary<string, SystemReport> _reportedSystemsDictionary;
 
@@ -27,9 +27,9 @@ namespace Estimating.ProgressReporter.Model
         
 
         //CONSTRUCTOR
-        public CostCodeReport(EstimateModel EstimateModel, ReportModel ReportModel)
+        public CostCodeReport(string jobNumber, ReportModel ReportModel)
         {
-            _estimateModel = EstimateModel;
+            _jobNumber = jobNumber;
             _reportModel = ReportModel;
            // _reportedSystemsDictionary = _reportModel.Systems.ToDictionary(p => p.Name, p => p);
         }
@@ -48,7 +48,7 @@ namespace Estimating.ProgressReporter.Model
         /// </remarks>
         public void GenerateCostCodeReport()
         {
-            _costCodeDataService = new CostCodeDataService("2170507");
+            _costCodeDataService = new CostCodeDataService(_jobNumber);
             List<string> reportedPhaseCodes = new List<string>();
             List<PhaseCode> phaseCodeInstance = new List<PhaseCode>();
 
@@ -114,37 +114,22 @@ namespace Estimating.ProgressReporter.Model
                     throw new Exception("The list of phase code instances failed to populate.");
                 }
 
-
                 //The CostCodeResult objects now need to be post-processed to calculate the reporting parameters (percent complete, over/under, etc.)
-
-
-
-
-
-            }
-
-
-
-
-        }
-
-
-        private void PostProcessCostCodeResults(List<CostCodeResult> costCodeResults)
-        {
-            foreach(CostCodeResult c in costCodeResults)
-            {
-                if(c.EarnedHours != 0)
+                foreach (CostCodeResult c in CostCodeResults)
                 {
-                    c.EarnedActualRatio = (c.ActualHours / c.EarnedHours);
-                    c.ProjectionStatus = GetProjectionStatus(c.EarnedActualRatio);
-
-                }
-                else
-                {
-                    throw new Exception($"Earned hours for {c.PhaseCode} failed to populate.  Please reference the CostCodeReport module to find out more.");
+                    if (c.EarnedHours != 0)
+                    {
+                        c.EarnedActualRatio =Math.Round(((Double)c.ActualHours / c.EarnedHours), 2);
+                        c.ProjectionStatus = GetProjectionStatus(c.EarnedActualRatio);
+                    }
+                    else
+                    {
+                        throw new Exception($"Earned hours for {c.PhaseCode} failed to populate.  Please reference the CostCodeReport module to find out more.");
+                    }
                 }
 
             }
+
         }
 
         private CostCodeProjectionStatus GetProjectionStatus(double earnedActualRatio)

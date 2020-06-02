@@ -71,14 +71,15 @@ namespace Estimating.VSTO
                         //Create the report service. 
                         ClientReportService clientReportService = new ClientReportService(jobNumber);
                         //Send the field report system list to the report service to generate the full summary report object.  
-                        ComparatorReport finishedReport = clientReportService.GetReportSummary(reportedSystems);
+                        //ComparatorReport finishedReport = clientReportService.GetReportSummary(reportedSystems);
+                        CostCodeReport costCodeReport = clientReportService.GetCostCodeReportSummary(reportedSystems);
 
-                      
 
                         // ***************************************************
                         //3.  DISPLAY THE PREFERRED DATA FROM THE REPORT OBJECT.
                         //Send the report object to the data display service.
-                        DataDisplayService dataDisplayService = DataDisplayService.LoadDataObject(finishedReport); 
+                        DataDisplayService dataDisplayService = new DataDisplayService();
+                        dataDisplayService.DisplayCostCodeReport(costCodeReport); 
                     }
                     else
                     {

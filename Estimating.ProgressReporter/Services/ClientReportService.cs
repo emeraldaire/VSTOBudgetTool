@@ -43,5 +43,21 @@ namespace Estimating.ProgressReporter.Services
 
             return _modelReportingService.GetCompleteModelReport(); ;
         }
+
+        /// <summary>
+        /// Returns a completed CostCodeReport for the systems and job being reported.
+        /// </summary>
+        /// <param name="reportedSystemsList"></param>
+        /// <returns></returns>
+        public CostCodeReport GetCostCodeReportSummary(List<SystemReport> reportedSystemsList)
+        {
+            //Generate the data repository, which contains the Model and Report repositories, along with the ReportModel and EstimateModel.
+            _dataRepository = DataRepository.LoadDataRepository(_jobNumber, reportedSystemsList);
+
+            //Populate the ModelReportingService with the ReportModel, which is the only requirement for the CostCodeReport.
+            ModelReportingService modelReportingService = new ModelReportingService(_dataRepository.ReportModel);
+            modelReportingService.GenerateCostCodeReport(_dataRepository.JobNumber);
+            return modelReportingService.GetCompleteCostCodeReport();
+        }
     }
 }

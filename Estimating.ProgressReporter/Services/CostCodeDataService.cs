@@ -19,15 +19,45 @@ namespace Estimating.ProgressReporter.Services
             _jobNumber = jobNumber;
         }
 
+        public int GetActualHoursBySystemName(string systemName)
+        {
+            switch (systemName)
+            {
+                case "FC-1":
+                    return 2;
+                case "FC-2":
+                    return 3;
+                case "FC-3":
+                    return 7;
+                default:
+                    return 5;
+            }
+        }
 
         public int GetEstimatedHoursByPhaseCode(string phaseCode)
         {
-            return 5;
+            switch (phaseCode)
+            {
+                case "0001-0401":
+                    return 2;
+                case "0001-0601":
+                    return 3;
+                default:
+                    return 5;
+            }
         }
 
         public int GetBudgetedHoursByPhaseCode(string phaseCode)
         {
-            return 20;
+            switch (phaseCode)
+            {
+                case "0001-0401":
+                    return 59;
+                case "0001-0601":
+                    return 27;
+                default:
+                    return 50;
+            }
         }
     }
 }
