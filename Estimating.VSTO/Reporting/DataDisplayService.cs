@@ -27,6 +27,14 @@ namespace Estimating.VSTO.Reporting
         Color ActualRecordColor;
         Color BudgetSummaryRowColor;
         Color ActualSummaryRowColor;
+        Color LargeHeaderColor;
+
+        //FORMATTING VALUES
+        int FontSizeHeader = 20;
+        int RowHeightHeader = 26;
+        
+        //CELL REFERENCES
+        int headerRow = 2;
 
 
         //VSTO OBJECTS
@@ -52,6 +60,7 @@ namespace Estimating.VSTO.Reporting
                 //Workbook newWorkbook = Globals.ThisAddIn.Application.Workbooks.Add();
                 Excel = Globals.ThisAddIn.Application;
                 Excel.Visible = true;
+                Excel.DisplayAlerts = false;
 
                 //Get a new workbook and add a single sheet.  The new sheet will automatically become the activesheet.
                 reportWorkbook = (_Workbook)(Excel.Workbooks.Add());
@@ -65,7 +74,7 @@ namespace Estimating.VSTO.Reporting
                 List<string> costReportHeaders = GenerateCostReportHeaders();
 
                 //Write the table headers to the active worksheet.
-                int headerRow = 2;
+              
                 for (int i = 1; i <= costReportHeaders.Count; i++)
                 {
                     reportWorksheet.Cells[headerRow, i].Value = costReportHeaders[i - 1];
@@ -113,7 +122,7 @@ namespace Estimating.VSTO.Reporting
                     reportWorksheet.Cells[recordRow, 9] = cc.ActualHours;
                     //Earned/Actual
                     reportWorksheet.Cells[recordRow, 10] = cc.EarnedActualRatio;
-                    reportWorksheet.Cells[recordRow, 10].NumberFormat = "0.00%";
+                    //reportWorksheet.Cells[recordRow, 10].NumberFormat = "0.00%";
 
                     //Hours (Projected)
                     //TODO: Discuss calculation with Grant
@@ -136,11 +145,52 @@ namespace Estimating.VSTO.Reporting
 
                 }
 
+                //Create the merged cell headers; this can only happen if (headerRow >= 2). 
+                if (headerRow >= 2)
+                {
+                    //BUDGET
+                    Range BudgetValuesHeaderRange = reportWorksheet.Range[reportWorksheet.Cells[headerRow - 1, 1], reportWorksheet.Cells[headerRow - 1, 4]];
+                    BudgetValuesHeaderRange.Value = "Budget";
+                    BudgetValuesHeaderRange.Merge();
+                    BudgetValuesHeaderRange.Interior.Color = ColorTranslator.FromHtml("#e3e3e3");
+                    BudgetValuesHeaderRange.Font.Size = FontSizeHeader;
+                    BudgetValuesHeaderRange.RowHeight = RowHeightHeader;
+                    BudgetValuesHeaderRange.Font.Bold = true;
+                    BudgetValuesHeaderRange.Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
 
+                    //ACTUAL
+                    Range ActualValuesHeaderRange = reportWorksheet.Range[reportWorksheet.Cells[headerRow - 1, 5], reportWorksheet.Cells[headerRow - 1, 9]];
+                    ActualValuesHeaderRange.Value = "Actual";
+                    ActualValuesHeaderRange.Merge();
+                    ActualValuesHeaderRange.Interior.Color = ColorTranslator.FromHtml("#e3e3e3");
+                    ActualValuesHeaderRange.Font.Size = FontSizeHeader;
+                    ActualValuesHeaderRange.RowHeight = RowHeightHeader;
+                    ActualValuesHeaderRange.Font.Bold = true;
+                    ActualValuesHeaderRange.Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
 
+                    //PRODUCTIVITY
+                    reportWorksheet.Cells[headerRow - 1, 10] = "Productivity";
+                    reportWorksheet.Cells[headerRow - 1, 10].Interior.Color = ColorTranslator.FromHtml("#e3e3e3");
+                    reportWorksheet.Cells[headerRow - 1, 10].Font.Size = FontSizeHeader;
+                    reportWorksheet.Cells[headerRow - 1, 10].Font.Bold = true;
+                    reportWorksheet.Cells[headerRow - 1, 10].RowHeight = RowHeightHeader;
+                    reportWorksheet.Cells[headerRow - 1, 10].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+
+                    //PROJECTION
+                    reportWorksheet.Cells[headerRow - 1, 11] = "Projection";
+                    reportWorksheet.Cells[headerRow - 1, 11].Interior.Color = ColorTranslator.FromHtml("#e3e3e3");
+                    reportWorksheet.Cells[headerRow - 1, 11].Font.Size = FontSizeHeader;
+                    reportWorksheet.Cells[headerRow - 1, 11].Font.Bold = true;
+                    reportWorksheet.Cells[headerRow - 1, 11].RowHeight = RowHeightHeader;
+                    reportWorksheet.Cells[headerRow - 1, 11].Style.HorizontalAlignment = XlHAlign.xlHAlignCenter; 
+                }
 
                 //Autofit all cells with content.
                 reportWorksheet.Columns.AutoFit();
+
+                //Add the chart
+                GenerateChart();
+
             }
         }
 
@@ -161,7 +211,7 @@ namespace Estimating.VSTO.Reporting
                 "% Complete",
                 "Earned Hrs",
                 "Actual Hrs",
-                "Earned/Actual",
+                "Performance",
                 "Hours (Projected)"
             };
         }
@@ -197,6 +247,39 @@ namespace Estimating.VSTO.Reporting
             //BudgetSummaryRowColor = XlRgbColor.rgbLightGray;
             //ActualSummaryRowColor = ColorTranslator.FromHtml("231,231,231"); 
         }
+
+        /// <summary>
+        /// Generates the bar chart for the Labor Reporting Chart.
+        /// </summary>
+        private void GenerateChart()
+        {
+            //const string fileName = "C:\\Book1.xlsx";
+            //string topLeft = "A1";
+            //string bottomRight = "A4";
+            string graphTitle = "Graph Title";
+            string xAxis = "Activity";
+            string yAxis = "Performance";
+
+            //Add chart
+            var charts = reportWorksheet.ChartObjects() as ChartObjects;
+            var chartObject = charts.Add(300, 10, 300, 300) as ChartObject;
+            var barChart = chartObject.Chart;
+
+            //Set chart range.
+            var barChartPhaseCodeRange = reportWorksheet.Range[reportWorksheet.Cells[headerRow + 1, 1], reportWorksheet.Cells[5, 1]];
+            var barChartPerformanceRange = reportWorksheet.Range[reportWorksheet.Cells[headerRow + 1, 10], reportWorksheet.Cells[5, 10]];
+            var barChartData = Excel.Union(barChartPhaseCodeRange, barChartPerformanceRange);
+
+            barChart.SetSourceData(barChartData);
+
+            //Set chart properties.
+            barChart.ChartType = XlChartType.xlBarClustered;
+            barChart.ChartWizard(Source: barChartData,
+                Title: graphTitle,
+                CategoryTitle: xAxis,
+                ValueTitle: yAxis);
+        }
+
 
 
     }
