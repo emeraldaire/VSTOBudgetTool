@@ -157,6 +157,7 @@
   -->
   <ItemGroup>
     <Compile Include="Helpers\CSVHelper.cs" />
+    <Compile Include="Helpers\EstimateHelper.cs" />
     <Compile Include="Helpers\JobNumberValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

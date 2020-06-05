@@ -36,17 +36,17 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RibbonBudgetTab));
             this.BudgetTab = this.Factory.CreateRibbonTab();
-            this.ExportGroup = this.Factory.CreateRibbonGroup();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.txtJobNumber = this.Factory.CreateRibbonEditBox();
             this.JobInfoGroup = this.Factory.CreateRibbonGroup();
+            this.txtJobNumber = this.Factory.CreateRibbonEditBox();
+            this.group1 = this.Factory.CreateRibbonGroup();
             this.btnImportFieldReport = this.Factory.CreateRibbonButton();
             this.btnSaveCompletedReport = this.Factory.CreateRibbonButton();
+            this.ExportGroup = this.Factory.CreateRibbonGroup();
             this.btnSaveEstimateToDatabase = this.Factory.CreateRibbonButton();
             this.BudgetTab.SuspendLayout();
-            this.ExportGroup.SuspendLayout();
-            this.group1.SuspendLayout();
             this.JobInfoGroup.SuspendLayout();
+            this.group1.SuspendLayout();
+            this.ExportGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // BudgetTab
@@ -57,11 +57,17 @@
             this.BudgetTab.Label = "Budget";
             this.BudgetTab.Name = "BudgetTab";
             // 
-            // ExportGroup
+            // JobInfoGroup
             // 
-            this.ExportGroup.Items.Add(this.btnSaveEstimateToDatabase);
-            this.ExportGroup.Label = "Estimate";
-            this.ExportGroup.Name = "ExportGroup";
+            this.JobInfoGroup.Items.Add(this.txtJobNumber);
+            this.JobInfoGroup.Label = "Job Information";
+            this.JobInfoGroup.Name = "JobInfoGroup";
+            // 
+            // txtJobNumber
+            // 
+            this.txtJobNumber.Label = "Job Number";
+            this.txtJobNumber.Name = "txtJobNumber";
+            this.txtJobNumber.Text = null;
             // 
             // group1
             // 
@@ -70,19 +76,9 @@
             this.group1.Label = "Report";
             this.group1.Name = "group1";
             // 
-            // txtJobNumber
-            // 
-            this.txtJobNumber.Label = "Job Number";
-            this.txtJobNumber.Name = "txtJobNumber";
-            // 
-            // JobInfoGroup
-            // 
-            this.JobInfoGroup.Items.Add(this.txtJobNumber);
-            this.JobInfoGroup.Label = "Job Information";
-            this.JobInfoGroup.Name = "JobInfoGroup";
-            // 
             // btnImportFieldReport
             // 
+            this.btnImportFieldReport.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnImportFieldReport.Image = ((System.Drawing.Image)(resources.GetObject("btnImportFieldReport.Image")));
             this.btnImportFieldReport.Label = "Select Field Report";
             this.btnImportFieldReport.Name = "btnImportFieldReport";
@@ -96,7 +92,14 @@
             this.btnSaveCompletedReport.Label = "Export Results";
             this.btnSaveCompletedReport.Name = "btnSaveCompletedReport";
             this.btnSaveCompletedReport.ShowImage = true;
+            this.btnSaveCompletedReport.Visible = false;
             this.btnSaveCompletedReport.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSaveCompletedReport_Click);
+            // 
+            // ExportGroup
+            // 
+            this.ExportGroup.Items.Add(this.btnSaveEstimateToDatabase);
+            this.ExportGroup.Label = "Estimate";
+            this.ExportGroup.Name = "ExportGroup";
             // 
             // btnSaveEstimateToDatabase
             // 
@@ -115,12 +118,12 @@
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.RibbonBudgetTab_Load);
             this.BudgetTab.ResumeLayout(false);
             this.BudgetTab.PerformLayout();
-            this.ExportGroup.ResumeLayout(false);
-            this.ExportGroup.PerformLayout();
-            this.group1.ResumeLayout(false);
-            this.group1.PerformLayout();
             this.JobInfoGroup.ResumeLayout(false);
             this.JobInfoGroup.PerformLayout();
+            this.group1.ResumeLayout(false);
+            this.group1.PerformLayout();
+            this.ExportGroup.ResumeLayout(false);
+            this.ExportGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }

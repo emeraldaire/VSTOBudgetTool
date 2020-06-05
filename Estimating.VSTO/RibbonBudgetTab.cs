@@ -20,6 +20,7 @@ namespace Estimating.VSTO
     {
         private void RibbonBudgetTab_Load(object sender, RibbonUIEventArgs e)
         {
+            btnSaveCompletedReport.Visible = false;
             //Do nothing
         }
 
@@ -136,8 +137,18 @@ namespace Estimating.VSTO
         /// <param name="e"></param>
         private void btnSaveEstimateToDatabase_Click(object sender, RibbonControlEventArgs e)
         {
-            MessageBox.Show("Saving Estimate Data");
-            //TODO: Insert processing methods here OR call to the main processing method.  
+
+            //Validate and assign the job number before opening the file dialog window.  Validation is 
+            //performed by the JobNumberValidation object upon instantiation. 
+            //JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text);
+
+            //MessageBox.Show("Saving Estimate Data");
+            //TODO: Insert processing methods here OR call to the main processing method. 
+            EstimateHelper estimateHelper = new EstimateHelper();
+            estimateHelper.CalibratePosition();
+            estimateHelper.PopulateSystemList();
+
+
         }
 
         

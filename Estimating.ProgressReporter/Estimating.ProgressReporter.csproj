@@ -76,6 +76,7 @@
     <Compile Include="Services\CostCodeDataService.cs" />
     <Compile Include="Services\EstimateDataService.cs" />
     <Compile Include="Services\EstimateModelService.cs" />
+    <Compile Include="Services\EstimateRecordingService.cs" />
     <Compile Include="Services\IEstimateDataService.cs" />
     <Compile Include="Services\IModelReportingService.cs" />
     <Compile Include="Services\IReportDataService.cs" />
