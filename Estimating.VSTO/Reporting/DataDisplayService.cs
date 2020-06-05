@@ -268,6 +268,7 @@ namespace Estimating.VSTO.Reporting
             //Set chart range.
             var barChartPhaseCodeRange = reportWorksheet.Range[reportWorksheet.Cells[headerRow + 1, 1], reportWorksheet.Cells[5, 1]];
             var barChartPerformanceRange = reportWorksheet.Range[reportWorksheet.Cells[headerRow + 1, 10], reportWorksheet.Cells[5, 10]];
+            //var barChartPercentCompleteRange = reportWorksheet.Range[reportWorksheet.Cells[headerRow + 1, 8], reportWorksheet.Cells[5, 8]];
             var barChartData = Excel.Union(barChartPhaseCodeRange, barChartPerformanceRange);
 
             barChart.SetSourceData(barChartData);

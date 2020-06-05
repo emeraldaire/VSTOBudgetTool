@@ -173,6 +173,10 @@
     <EmbeddedResource Include="RibbonBudgetTab.resx">
       <DependentUpon>RibbonBudgetTab.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Documentation\BasicFieldReport.csv" />
+    <None Include="Documentation\BluebeamFieldReport.csv" />
+    <None Include="Documentation\Estimate Sheet Sample.xlsx" />
+    <None Include="Documentation\Master Documentation.docx" />
     <None Include="Documentation\Use Cases of the Budget Tracking Tool.docx" />
     <None Include="Documentation\VSTOBudgetTracker.pdf" />
     <None Include="Estimating.VSTO_TemporaryKey.pfx" />

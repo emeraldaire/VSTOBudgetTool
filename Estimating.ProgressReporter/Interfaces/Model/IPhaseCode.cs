@@ -59,12 +59,11 @@ namespace Estimating.ProgressReporter.Interfaces.Model
         Residential,
         //0003
         LightCommercial,
-        
-        //    0001,
+        //0001,
         BuildingTrades,
-        //    9000
+        //9000
         ChangeOrder,
-        //    Other
+        //Other
         Unclassified
     }
 
