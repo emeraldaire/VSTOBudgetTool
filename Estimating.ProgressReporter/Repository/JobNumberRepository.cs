@@ -9,7 +9,7 @@ namespace Estimating.ProgressReporter.Repository
 {
     public class JobNumberRepository
     {
-        private SQLControl sqlControl { get; set; }
+        private SQLService.SQLHelper sqlControl { get; set; }
 
 
         public List<string> GetAll()

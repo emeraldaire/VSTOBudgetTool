@@ -12,7 +12,7 @@ namespace Estimating.ProgressReporter.Services
     {
         private string _jobNumber;
         private List<SystemEstimate> _systemEstimateList;
-        private SQLControl _sqlControl;
+        private SQLService.SQLHelper _sqlControl;
 
         public CostCodeDataService(string jobNumber)
         {

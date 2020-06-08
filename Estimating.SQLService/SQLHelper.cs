@@ -7,11 +7,11 @@ using System.Windows.Forms;
 
 namespace Estimating.SQLService
 {
-    public class SQLControl
+    public class SQLHelper
     {
         private string connectionString {get; set;}
 
-        public SQLControl()
+        public SQLHelper()
         {
 
         }

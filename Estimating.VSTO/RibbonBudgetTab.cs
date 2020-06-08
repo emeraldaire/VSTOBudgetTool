@@ -145,8 +145,16 @@ namespace Estimating.VSTO
             //MessageBox.Show("Saving Estimate Data");
             //TODO: Insert processing methods here OR call to the main processing method. 
             EstimateHelper estimateHelper = new EstimateHelper();
-            estimateHelper.CalibratePosition();
-            estimateHelper.PopulateSystemList();
+            //Try to activate the 'Main Form' tab of the Estimate sheet.  If the attempt is successful, then the process for saving estimate data 
+            //will move ahead.  Otherwise, an error message will be shown to the user. 
+            if (estimateHelper.CalibratePosition())
+            {
+               List<SystemEstimate> systemEstimateList = estimateHelper.PopulateSystemList();
+            }
+            else
+            {
+                MessageBox.Show("To save Estimate data, the user must have the Estimate workbook open and be on the 'MainForm' tab.");
+            }
 
 
         }

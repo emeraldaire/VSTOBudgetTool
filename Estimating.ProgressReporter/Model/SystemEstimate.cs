@@ -28,6 +28,10 @@ namespace Estimating.ProgressReporter.Model
             Name = name;
         }
 
+        /// <summary>
+        /// Returns a count of phase codes for the system.
+        /// </summary>
+        /// <returns></returns>
         public int GetPhaseCodeCount()
         {
             if(PhaseCodes != null)
@@ -40,6 +44,10 @@ namespace Estimating.ProgressReporter.Model
             }
         }
 
+        /// <summary>
+        /// Returns a string list of all phase codes for the system.
+        /// </summary>
+        /// <returns></returns>
         public List<string> GetFullPhaseCodeStrings()
         {
             List<string> fullPhaseCodeStrings = new List<string>();

@@ -12,7 +12,7 @@ namespace Estimating.ProgressReporter.Services
     public class EstimateDataService : IEstimateDataService
     {
         private List<SystemEstimate> _systemEstimateList;
-        private SQLControl _sqlControl;
+        private SQLService.SQLHelper _sqlControl;
 
         public List<SystemEstimate> GetSystemEstimatesByJobNumber(string jobNumber)
         {
