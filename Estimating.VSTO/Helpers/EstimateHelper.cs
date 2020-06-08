@@ -221,9 +221,9 @@ namespace Estimating.VSTO.Helpers
 
             List<PhaseCode> phaseCodeList = new List<PhaseCode>()
             {
-                new PhaseCode(equipmentHoursPhaseCode){ EstimatedHours = equipmentHours, AssociatedSystem = systemName},
-                new PhaseCode(buildingTradeHoursPhaseCode) { EstimatedHours = buildingTradeHours, AssociatedSystem = systemName},
-                new PhaseCode(RFRPipeHoursePhaseCode){EstimatedHours = RFRHours, AssociatedSystem = systemName}
+                new PhaseCode(equipmentHoursPhaseCode){ EarnedHours = equipmentHours, AssociatedSystem = systemName},
+                new PhaseCode(buildingTradeHoursPhaseCode) { EarnedHours = buildingTradeHours, AssociatedSystem = systemName},
+                new PhaseCode(RFRPipeHoursePhaseCode){EarnedHours = RFRHours, AssociatedSystem = systemName}
             };
 
             return new SystemEstimate(systemName){ PhaseCodes = phaseCodeList };
@@ -242,9 +242,9 @@ namespace Estimating.VSTO.Helpers
 
             List<PhaseCode> phaseCodeList = new List<PhaseCode>()
             {
-                new PhaseCode(equipmentHoursPhaseCode){ EstimatedHours = equipmentHours, AssociatedSystem = systemName},
-                new PhaseCode(buildingTradeHoursPhaseCode) { EstimatedHours = buildingTradeHours, AssociatedSystem = systemName},
-                new PhaseCode(RFRPipeHoursePhaseCode){EstimatedHours = RFRHours, AssociatedSystem = systemName}
+                new PhaseCode(equipmentHoursPhaseCode){ EarnedHours = equipmentHours, AssociatedSystem = systemName},
+                new PhaseCode(buildingTradeHoursPhaseCode) { EarnedHours = buildingTradeHours, AssociatedSystem = systemName},
+                new PhaseCode(RFRPipeHoursePhaseCode){EarnedHours = RFRHours, AssociatedSystem = systemName}
             };
 
             return new SystemEstimate(systemName) { PhaseCodes = phaseCodeList };

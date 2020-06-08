@@ -82,7 +82,7 @@ namespace Estimating.ProgressReporter.Interfaces.Model
         string PhaseCodePrefix { get; }
         PhaseCodeCategory PhaseCodeCategory { get;}
         PhaseCodeType PhaseCodeType { get; }
-        double EstimatedHours { get; set; }
+        double EarnedHours { get; set; }
         DateTime DateReported { get; }
 
     }

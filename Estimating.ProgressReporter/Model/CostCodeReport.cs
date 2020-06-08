@@ -50,9 +50,8 @@ namespace Estimating.ProgressReporter.Model
             List<string> reportedPhaseCodes = new List<string>();
             List<PhaseCode> phaseCodeInstance = new List<PhaseCode>();
 
-            //For each reported system, the estimated hours (for each reported phase code) for that system need to be read from the previously committed record
-            //in the BudgetVSTO database.
-            //GenerateReportedSystemEstimateData
+            //EARNED HOURS
+            //For each reported system, read the "EarnedHours" amount for the system's phase codes from the BudgetVSTO database.
             if (_reportModel != null)
             {
                 foreach (SystemReport s in _reportModel.Systems)
@@ -62,7 +61,7 @@ namespace Estimating.ProgressReporter.Model
                         //Assign the hours to the phase code's "EstimatedHours" property.  Estimated hours are synonymous with 'Earned' hours and are 
                         //read from the BudgetVSTO database record for the system being reported.  The hours are sent to the list of phase code instances.
                         //They will be summed by phase code later; for now, just read the phase code hours for the single system.
-                        p.EstimatedHours = _costCodeDataService.GetEarnedHours(s.Name, p.FullPhaseCode);
+                        p.EarnedHours = _costCodeDataService.GetEarnedHours(s.Name, p.FullPhaseCode);
                         
                         //Log the phase code to the list of all reported phase codes; this list is used below to obtain the budgeted/earned hour values.
                         if(!reportedPhaseCodes.Contains(p.FullPhaseCode))
@@ -77,8 +76,8 @@ namespace Estimating.ProgressReporter.Model
                     }
                 }
 
-                //Use the list of reported PhaseCodes to read and assign the total budgeted hours for that phase code.  
-                //This is the information that comes from SPECTRUM or Powertrack.
+                //BUDGETED HOURS & ACTUAL HOURS
+                //Use the list of reported PhaseCodes to read and assign the total budgeted hours and actual hours for that phase code from SPECTRUM.  
                 if(reportedPhaseCodes != null && reportedPhaseCodes.Count != 0)
                 {
                     CostCodeResults = new List<CostCodeResult>();
@@ -87,10 +86,10 @@ namespace Estimating.ProgressReporter.Model
                     {
                         CostCodeResults.Add(new CostCodeResult(p.ToString())
                         {
-                            //Assign comparison hours to the "EarnedHours" property.
-                            EarnedHours = _costCodeDataService.GetBudgetedHoursByPhaseCode(p.ToString())
+                            //Assign comparison hours to the "BudgetedHours" property.
+                            BudgetedHours = _costCodeDataService.GetBudgetedHoursByPhaseCode(p.ToString()),
+                            ActualHours = _costCodeDataService.GetActualHoursByPhaseCode(p.ToString())
                         });
-
                     }
                 }
                 else
@@ -98,16 +97,16 @@ namespace Estimating.ProgressReporter.Model
                     throw new Exception("The list of reported phase codes failed to populate.  Please reference CostCodeReport.GenerateCostCodeReport() for more information.");
                 }
 
-
+                //SUM THE EARNED HOURS 
                 //For each phase code, the hours from the reported systems list must be tallied before being assigned to 'CostCodeResult.ActualHours'
                 if(phaseCodeInstance!=null && phaseCodeInstance.Count != 0)
                 {
                     foreach(CostCodeResult c in CostCodeResults)
                     {
-                        var actualHours = (from p in phaseCodeInstance
+                        var earnedHours = (from p in phaseCodeInstance
                                            where p.FullPhaseCode == c.PhaseCode
-                                           select p.EstimatedHours).Sum();
-                        c.ActualHours = (int)actualHours;
+                                           select p.EarnedHours).Sum();
+                        c.EarnedHours = (int)earnedHours;
                     }
                 }
                 else

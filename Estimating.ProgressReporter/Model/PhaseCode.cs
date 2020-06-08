@@ -48,7 +48,7 @@ namespace Estimating.ProgressReporter.Model
         public string PhaseCodePrefix { get; private set; }
         public PhaseCodeCategory PhaseCodeCategory { get; private set; }
         public PhaseCodeType PhaseCodeType { get; private set; }
-        public double EstimatedHours { get; set; }
+        public double EarnedHours { get; set; }
         public DateTime DateReported { get; private set; }
 
         private PhaseCodeCategory AssignPhaseCodeCategory(string phaseCodePrefix)

@@ -209,8 +209,8 @@ namespace Estimating.VSTO.Reporting
                 "Units (Actual)",
                 "UOM (Actual)",
                 "% Complete",
-                "Actual Hrs",
                 "Earned Hrs",
+                "Actual Hrs",
                 "Performance",
                 "Hours (Projected)"
             };

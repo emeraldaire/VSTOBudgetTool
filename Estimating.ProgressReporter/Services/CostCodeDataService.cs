@@ -36,19 +36,9 @@ namespace Estimating.ProgressReporter.Services
             }
         }
 
-        public int GetActualHoursBySystemName(string systemName)
+        public int GetActualHoursByPhaseCode(string phaseCode)
         {
-            switch (systemName)
-            {
-                case "FC-1":
-                    return 2;
-                case "FC-2":
-                    return 3;
-                case "FC-3":
-                    return 7;
-                default:
-                    return 5;
-            }
+            return 343;
         }
 
         /// <summary>
@@ -97,15 +87,7 @@ namespace Estimating.ProgressReporter.Services
 
         public int GetBudgetedHoursByPhaseCode(string phaseCode)
         {
-            switch (phaseCode)
-            {
-                case "0001-0401":
-                    return 59;
-                case "0001-0601":
-                    return 27;
-                default:
-                    return 50;
-            }
+            return 19;
         }
 
         /// <summary>
