@@ -189,7 +189,7 @@ namespace Estimating.VSTO.Reporting
                 reportWorksheet.Columns.AutoFit();
 
                 //Add the chart
-                GenerateChart();
+               // GenerateChart();
 
             }
         }
@@ -209,8 +209,8 @@ namespace Estimating.VSTO.Reporting
                 "Units (Actual)",
                 "UOM (Actual)",
                 "% Complete",
-                "Earned Hrs",
                 "Actual Hrs",
+                "Earned Hrs",
                 "Performance",
                 "Hours (Projected)"
             };

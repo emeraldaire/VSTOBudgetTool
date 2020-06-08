@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLManager;
 using System.Windows.Forms;
 
 namespace Estimating.SQLService
@@ -10,7 +11,7 @@ namespace Estimating.SQLService
     public class SQLHelper
     {
         private string connectionString {get; set;}
-
+        private SQLControl sql;
         public SQLHelper()
         {
 

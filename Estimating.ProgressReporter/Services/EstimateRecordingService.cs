@@ -1,5 +1,6 @@
-﻿using Estimating.ProgressReporter.Model;
-using System;
+﻿using System;
+using Estimating.SQLService;
+using Estimating.ProgressReporter.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,18 +14,23 @@ namespace Estimating.ProgressReporter.Services
     /// <remarks>
     /// DATE: 6/2/20
     /// AUTHOR: Noah B
-    /// This class uses data provided by the VSTO to generate and record EstimateModel objects to the database.  There should be no implementation of 
-    /// Microsoft.Office.Interop.Excel in this class; VSTO will be responsible for that. 
+    /// This class uses data provided by the VSTO to record SystemEstimate objects to the database.  There should be no implementation of 
+    /// Microsoft.Office.Interop.Excel in this class.  The VSTO is responsible for handling spreadsheet data and generating the SystemEstimate list to 
+    /// be consumed by this class.
     /// </remarks>
     public class EstimateRecordingService
     {
-        /// <summary>
-        /// Returns a single SystemEstimate object to the caller.  Used by VSTO to instantiate objects that will be added to a List. 
-        /// </summary>
-        /// <returns></returns>
-        public SystemEstimate GenerateSystemEstimate()
+        private string _jobNumber;
+
+        public string JobNumber
         {
-            return null;
+            get { return _jobNumber; }
+            set { _jobNumber = value; }
+        }
+
+        public EstimateRecordingService(string jobNumber)
+        {
+            JobNumber = jobNumber; 
         }
 
         /// <summary>

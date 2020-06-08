@@ -40,11 +40,9 @@ namespace Estimating.ProgressReporter.Model
         }
 
         /// <summary>
-        /// 
+        /// Generates the primary CostCodeReport properties; after successfully running, the payload objects will be accessible to the caller.
         /// </summary>
         /// <remarks>
-        /// The origin of the "Budgeted", "Earned", and "Actual" hours is still unclear.  I thought I understood last time I talked to Grant, but the understanding
-        /// seems to have slipped away again.  I'm just not clear on how the field is reporting the hours for each system/phase code without filling out a timecard.
         /// </remarks>
         public void GenerateCostCodeReport()
         {
@@ -52,7 +50,8 @@ namespace Estimating.ProgressReporter.Model
             List<string> reportedPhaseCodes = new List<string>();
             List<PhaseCode> phaseCodeInstance = new List<PhaseCode>();
 
-            //For each reported system, the estimated hours (for each reported phase code) for that system need to be read and assigned from the Estimate sheet.
+            //For each reported system, the estimated hours (for each reported phase code) for that system need to be read from the previously committed record
+            //in the BudgetVSTO database.
             //GenerateReportedSystemEstimateData
             if (_reportModel != null)
             {
@@ -60,8 +59,10 @@ namespace Estimating.ProgressReporter.Model
                 {
                     foreach (PhaseCode p in s.PhaseCodes)
                     {
-                        //Assign the hours to the phase code's "EstimatedHours" property.
-                        p.EstimatedHours = _costCodeDataService.GetEstimatedHoursByPhaseCode(p.FullPhaseCode);
+                        //Assign the hours to the phase code's "EstimatedHours" property.  Estimated hours are synonymous with 'Earned' hours and are 
+                        //read from the BudgetVSTO database record for the system being reported.  The hours are sent to the list of phase code instances.
+                        //They will be summed by phase code later; for now, just read the phase code hours for the single system.
+                        p.EstimatedHours = _costCodeDataService.GetEarnedHours(s.Name, p.FullPhaseCode);
                         
                         //Log the phase code to the list of all reported phase codes; this list is used below to obtain the budgeted/earned hour values.
                         if(!reportedPhaseCodes.Contains(p.FullPhaseCode))

@@ -140,20 +140,21 @@ namespace Estimating.VSTO
 
             //Validate and assign the job number before opening the file dialog window.  Validation is 
             //performed by the JobNumberValidation object upon instantiation. 
-            //JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text);
+            JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text);
 
-            //MessageBox.Show("Saving Estimate Data");
-            //TODO: Insert processing methods here OR call to the main processing method. 
-            EstimateHelper estimateHelper = new EstimateHelper();
-            //Try to activate the 'Main Form' tab of the Estimate sheet.  If the attempt is successful, then the process for saving estimate data 
-            //will move ahead.  Otherwise, an error message will be shown to the user. 
-            if (estimateHelper.CalibratePosition())
+            if (validationControl.IsValidJobNumber)
             {
-               List<SystemEstimate> systemEstimateList = estimateHelper.PopulateSystemList();
-            }
-            else
-            {
-                MessageBox.Show("To save Estimate data, the user must have the Estimate workbook open and be on the 'MainForm' tab.");
+                EstimateHelper estimateHelper = new EstimateHelper();
+                //Try to activate the 'Main Form' tab of the Estimate sheet.  If the attempt is successful, then the process for saving estimate data 
+                //will move ahead.  Otherwise, an error message will be shown to the user. 
+                if (estimateHelper.CalibratePosition())
+                {
+                    List<SystemEstimate> systemEstimateList = estimateHelper.PopulateSystemList();
+                }
+                else
+                {
+                    MessageBox.Show("To save Estimate data, the user must have the Estimate workbook open and be on the 'MainForm' tab.");
+                } 
             }
 
 

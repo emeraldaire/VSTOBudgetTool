@@ -18,7 +18,8 @@ namespace Estimating.VSTO.Helpers
             //Instantiate the CSVDataService for the desired object type.
             CSVDataService<PhaseCodeHelper> csvDataService = new CSVDataService<PhaseCodeHelper>();   
             List<PhaseCodeHelper> filteredPhaseCodeList = FilterPhaseCodeRecords(csvDataService.GetRawRecords(filePath));
-             return GetSystemReports(filteredPhaseCodeList);
+            
+            return GetSystemReports(filteredPhaseCodeList);
         }
 
         /// <summary>
@@ -100,7 +101,6 @@ namespace Estimating.VSTO.Helpers
                     new SystemReport()
                     {
                         Name = s,
-                        //PhaseCodes = (List<PhaseCode>)phaseCodeList.Where(pc => pc.AssociatedSystem == s.ToString()).Select(pc => pc)
                         PhaseCodes = systemPhaseCodes 
                     }) ; 
             }

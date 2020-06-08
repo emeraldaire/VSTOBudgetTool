@@ -29,6 +29,9 @@ namespace Estimating.VSTO.Helpers
 
         //VSTO OBJECTS
         private List<SystemEstimate> systemEstimateList { get; set; }
+        string equipmentHoursPhaseCode = "0001-0901";
+        string buildingTradeHoursPhaseCode = "0001-0801";
+        string RFRPipeHoursePhaseCode = "0001-0602";
 
         //The Estimate sheet is hardcoded to allow only 103 rows.  Rather than mucking around with Interop.Excel, it's easier (however inelegant) here to simply 
         //iterate through the entire range to detect the listed systems.  'maxRow' specifies the total number of rows over which the application will run. If the
@@ -45,8 +48,6 @@ namespace Estimating.VSTO.Helpers
         //Column for 0602
         private int RFRPipePhaseCodeColumn = 12;
 
-
-
         public EstimateHelper()
         {
             //Workbook newWorkbook = Globals.ThisAddIn.Application.Workbooks.Add();
@@ -58,9 +59,11 @@ namespace Estimating.VSTO.Helpers
             //reportWorksheet = (_Worksheet)reportWorkbook.Worksheets.Add();
             estimateWorksheet = estimateWorkbook.ActiveSheet;
         }
-        
-        
-        
+        /// <summary>
+        /// Attempts to activate the 'MainForm' tab of the Estimate workbook.  If the attempt is successful, this function will return TRUE. 
+        /// If not, an error message will be displayed to the user that includes directions on how to correctly activate the proper components.
+        /// </summary>
+        /// <returns></returns>
         public bool CalibratePosition()
         {
             //Check if the current worksheet is the "MainForm" tab. 
@@ -129,9 +132,7 @@ namespace Estimating.VSTO.Helpers
         /// </remarks>
         public List<SystemEstimate> PopulateSystemList()
         {
-            
             systemEstimateList = new List<SystemEstimate>();
-      
             try
             {
 
@@ -155,7 +156,6 @@ namespace Estimating.VSTO.Helpers
                         //bool dividedSystem = HasSubdivisions(i);
                         //MessageBox.Show("System: " + systemNameRange.Value2.ToString() + " Divided System: " + dividedSystem.ToString());
                     }
-
                 }
             }
             catch (Exception e)
@@ -166,7 +166,6 @@ namespace Estimating.VSTO.Helpers
 
             return systemEstimateList;
         }
-
 
         /// <summary>
         /// Returns TRUE if the system on the current row contains subdivision entries.
@@ -216,15 +215,8 @@ namespace Estimating.VSTO.Helpers
         /// <returns></returns>
         private SystemEstimate GenerateUndividedSystem(string systemName, int currentRow)
         {
-            //Range systemRow = estimateWorksheet.Range[estimateWorksheet.Cells[currentRow, 1], estimateWorksheet.Cells[currentRow, 12]];
-
-            string equipmentHoursPhaseCode = "0001-0901";
             int equipmentHours = AssignHoursToObject(currentRow, equipmentPhaseCodeColumn);
-
-            string buildingTradeHoursPhaseCode = "0001-0801";
             int buildingTradeHours = AssignHoursToObject(currentRow, buildingTradesPhaseCodeColumn);
-            
-            string RFRPipeHoursePhaseCode = "0001-0602";
             int RFRHours = AssignHoursToObject(currentRow, RFRPipePhaseCodeColumn);
 
             List<PhaseCode> phaseCodeList = new List<PhaseCode>()
@@ -244,15 +236,8 @@ namespace Estimating.VSTO.Helpers
         /// <returns></returns>
         private SystemEstimate GeneratedDividedSystem(string systemName, int currentRow)
         {
-            //Range systemRow = estimateWorksheet.Range[estimateWorksheet.Cells[currentRow, 1], estimateWorksheet.Cells[currentRow, 12]];
-
-            string equipmentHoursPhaseCode = "0001-0901";
             int equipmentHours = GetSummedHours(currentRow, equipmentPhaseCodeColumn);
-
-            string buildingTradeHoursPhaseCode = "0001-0801";
             int buildingTradeHours = GetSummedHours(currentRow, buildingTradesPhaseCodeColumn);
-
-            string RFRPipeHoursePhaseCode = "0001-0602";
             int RFRHours = GetSummedHours(currentRow, RFRPipePhaseCodeColumn);
 
             List<PhaseCode> phaseCodeList = new List<PhaseCode>()
@@ -308,8 +293,7 @@ namespace Estimating.VSTO.Helpers
         /// <returns></returns>
         private int GetNumberOfDivisions(int currentRow)
         {
-           
-            //Use a counter to keep track of how many subdivisions are non-null;
+            //Use a counter to keep track of how many subdivisions are non-null or non-empty;
             int numberOfDivisions = 0;
             for (int i = 0; i <= maxRow; i++)
             {
