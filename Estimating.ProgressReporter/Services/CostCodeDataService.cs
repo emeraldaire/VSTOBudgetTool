@@ -26,7 +26,7 @@ namespace Estimating.ProgressReporter.Services
             try
             {
                 //Attempt to populate the connection strings.
-                estimateDatabaseString = Properties.Settings.Default.Estimating;
+                estimateDatabaseString = Properties.Settings.Default.Estimating_Dev;
                 spectrumDatabaseString = Properties.Settings.Default.SPECTRUM;
             }
             catch (Exception)
@@ -36,13 +36,44 @@ namespace Estimating.ProgressReporter.Services
             }
         }
 
+        /// <summary>
+        /// Returns the summed 'Total_Hours' from [JC_TRANSACTION_HISTORY_MC] by Phase Code, Job Number, and (redundant) Cost Type.
+        /// </summary>
+        /// <param name="phaseCode"></param>
+        /// <returns></returns>
         public int GetActualHoursByPhaseCode(string phaseCode)
         {
-            return 343;
+            phaseCode = phaseCode.Remove(4, 1);
+            SQLControl sql = new SQLControl(spectrumDatabaseString);
+            //sql.AddParam("@jobNumber", _jobNumber);
+            sql.AddParam("@jobNumber", "   " + _jobNumber);
+            sql.AddParam("@phaseCode", phaseCode);
+            sql.AddParam("@costType", "L");
+            //sql.AddParam("@costType", "L");
+            sql.ExecQuery("SELECT SUM(Total_Hours) FROM JC_TRANSACTION_HISTORY_MC WHERE Job_Number = @jobNumber AND Cost_Type = @costType AND Phase_Code = @phaseCode");
+
+            //sql.ExecQuery("SELECT * FROM EstimateMain");
+            if (sql.HasException())
+            {
+                throw new Exception("Failure in the SQL class while retrieving Earned Hours.");
+            }
+            else if (sql.DBDT.Rows.Count == 0)
+            {
+                //MessageBox.Show("There doesn't appear to be a record for the system: " + systemName + " in Job Number: " + _jobNumber + ". This could be:  \n" +
+                //    "1. Because of a mismatch in system names between the name contained in the estimate sheet and the name contained in the report. \n" +
+                //    "2. Because a phase code was included on the CSV report that wasn't included in the original Estimate." );
+                return 0;
+            }
+            else
+            {
+                //int budgetedHours = Convert.ToInt32(sql.DBDT.Rows[0].ItemArray[0].ToString());
+                double actualHours = Convert.ToDouble(sql.DBDT.Rows[0].ItemArray[0].ToString());
+                return (int)actualHours;
+            }
         }
 
         /// <summary>
-        /// Returns the 'Earned' (estimated) hours for the provided phase code and system name.  
+        /// Returns the 'Earned' (estimated) hours from [EstimateMain] for the provided phase code and system name.  
         /// </summary>
         /// <remarks>
         /// Connects to the "BudgetVSTO" database.
@@ -84,10 +115,41 @@ namespace Estimating.ProgressReporter.Services
             }
         }
 
+        /// <summary>
+        /// Returns the 'Original_Est_Hours' from [JC_PHASE_MASTER_MC] for the provided Job Number and Phase Code, where Cost Type is always "L" for "Labor"
+        /// </summary>
+        /// <param name="phaseCode"></param>
+        /// <returns></returns>
 
         public int GetBudgetedHoursByPhaseCode(string phaseCode)
         {
-            return 19;
+            phaseCode = phaseCode.Remove(4, 1);
+            SQLControl sql = new SQLControl(spectrumDatabaseString);
+            //sql.AddParam("@jobNumber", _jobNumber);
+            sql.AddParam("@jobNumber", "   " + _jobNumber);
+            sql.AddParam("@phaseCode", phaseCode);
+            sql.AddParam("@costType", "L");
+            //sql.AddParam("@costType", "L");
+            sql.ExecQuery("SELECT TOP(1) Original_Est_Hours FROM JC_PHASE_MASTER_MC WHERE Phase_Code = @phaseCode AND Job_Number = @jobNumber AND Cost_Type = @costType");
+
+            //sql.ExecQuery("SELECT * FROM EstimateMain");
+            if (sql.HasException())
+            {
+                throw new Exception("Failure in the SQL class while retrieving Earned Hours.");
+            }
+            else if (sql.DBDT.Rows.Count == 0)
+            {
+                //MessageBox.Show("There doesn't appear to be a record for the system: " + systemName + " in Job Number: " + _jobNumber + ". This could be:  \n" +
+                //    "1. Because of a mismatch in system names between the name contained in the estimate sheet and the name contained in the report. \n" +
+                //    "2. Because a phase code was included on the CSV report that wasn't included in the original Estimate." );
+                return 0;
+            }
+            else
+            { 
+                //int budgetedHours = Convert.ToInt32(sql.DBDT.Rows[0].ItemArray[0].ToString());
+                double budgetedHours = Convert.ToDouble(sql.DBDT.Rows[0].ItemArray[0].ToString());
+                return (int)budgetedHours;
+            }
         }
 
         /// <summary>

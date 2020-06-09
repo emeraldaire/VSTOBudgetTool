@@ -1,4 +1,5 @@
 ﻿using Estimating.SQLService;
+using SQLManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +10,38 @@ namespace Estimating.ProgressReporter.Repository
 {
     public class JobNumberRepository
     {
-        private SQLService.SQLHelper sqlControl { get; set; }
-
+        //TODO: Encapsulate connection strings for single point control.
+        private string estimateDatabaseString = Properties.Settings.Default.Estimating_Dev;
+        //private string estimateDatabaseString = Properties.Settings.Default.Estimating_Dev;
 
         public List<string> GetAll()
         {
-            List<string> activeEstimateJobNumbers = new List<string>();
+            SQLControl sql = new SQLControl(estimateDatabaseString);
+            sql.ExecQuery("SELECT JobNumber FROM EstimateHeader");
 
-            activeEstimateJobNumbers.Add("2170507");
-            activeEstimateJobNumbers.Add("2181105");
-            activeEstimateJobNumbers.Add("2180608");
-            activeEstimateJobNumbers.Add("2151107");
-            activeEstimateJobNumbers.Add("2190204");
-            activeEstimateJobNumbers.Add("2180416");
-            activeEstimateJobNumbers.Add("2180410");
-            activeEstimateJobNumbers.Add("2160709");
+            if (sql.HasException())
+            {
+                throw new Exception("The JobNumberRepository was unable to populate the list of job numbers");
+            }
+            else if (sql.DBDT.Rows.Count == 0)
+            {
+                //MessageBox.Show("There doesn't appear to be a record for the system: " + systemName + " in Job Number: " + _jobNumber + ". This could be:  \n" +
+                //    "1. Because of a mismatch in system names between the name contained in the estimate sheet and the name contained in the report. \n" +
+                //    "2. Because a phase code was included on the CSV report that wasn't included in the original Estimate." );
+                return null;
+            }
+            else
+            {
+                List<string> jobNumberList = new List<string>();
 
-            return activeEstimateJobNumbers;
+                for(int i = 0; i < sql.DBDT.Rows.Count; i++)
+                {
+                    string jobNumber = sql.DBDT.Rows[i].ItemArray[0].ToString();
+                    jobNumberList.Add(jobNumber);
+                }
+
+                return jobNumberList;
+            }
         }
 
         public string GetJobNumberByName(string jobName)
