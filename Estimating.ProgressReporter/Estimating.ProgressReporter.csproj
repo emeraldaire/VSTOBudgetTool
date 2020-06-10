@@ -102,11 +102,5 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Estimating.SQLService\Estimating.SQLService.csproj">
-      <Project>{8881481c-2bd2-4f2c-bb30-c54594f50ff5}</Project>
-      <Name>Estimating.SQLService</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
