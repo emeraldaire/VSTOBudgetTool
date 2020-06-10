@@ -1,4 +1,5 @@
-﻿using Estimating.SQLService;
+﻿using Estimating.ProgressReporter.Services;
+using Estimating.SQLService;
 using SQLManager;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,7 @@ namespace Estimating.ProgressReporter.Repository
 {
     public class JobNumberRepository
     {
-        //TODO: Encapsulate connection strings for single point control.
-        private string estimateDatabaseString = Properties.Settings.Default.Estimating_Dev;
-        //private string estimateDatabaseString = Properties.Settings.Default.Estimating_Dev;
+        private string estimateDatabaseString = ConnectionStringService.GetConnectionString("Estimate");
 
         public List<string> GetAll()
         {

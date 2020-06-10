@@ -2,6 +2,8 @@
 using Estimating.SQLService;
 using Estimating.ProgressReporter.Model;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +43,78 @@ namespace Estimating.ProgressReporter.Services
         {
 
         }
+
+        /// <summary>
+        /// Insert multiple records into the database transaction.
+        /// </summary>
+        /// <param name="estimateList"></param>
+        private void InsertMultipleRecords(IEnumerable<EstimateTransaction> estimateList)
+        {
+            //Create a datatable from the list.
+            var estimateRecords = ConvertToDataTable(estimateList);
+
+            //insert in DB
+            using (var connection = ConnectionStringService.GetConnection("Estimate"))
+            {
+                connection.Open();
+                using (SqlTransaction transaction = connection.BeginTransaction())
+                {
+                    using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, transaction))
+                    {
+                        try
+                        {
+                            bulkCopy.DestinationTableName = "EstimateMain";
+                            bulkCopy.WriteToServer(estimateRecords);
+                            transaction.Commit();
+
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            connection.Close();
+                        }
+
+                    }
+                }
+            }
+
+
+
+        }
+
+        /// <summary>
+        /// Converts the provided list of 'EstimateTransaction' objects to a DataTable.
+        /// </summary>
+        /// <param name="estimateList"></param>
+        /// <returns></returns>
+        private DataTable ConvertToDataTable(IEnumerable<EstimateTransaction> estimateList)
+        {
+            var table = new DataTable();
+            table.Columns.Add("EstimateID", typeof(int));
+            table.Columns.Add("JobNumber", typeof(string));
+            table.Columns.Add("SystemName", typeof(string));
+            table.Columns.Add("PhaseCode", typeof(string));
+            table.Columns.Add("EarnedHours", typeof(int));
+
+            foreach (EstimateTransaction est in estimateList)
+            {
+                table.Rows.Add(new object[]
+                {
+                est.EstimateID,
+                est.JobNumber,
+                est.SystemName,
+                est.FullPhaseCode,
+                est.EarnedHours
+                });
+            }
+
+            return table;
+        }
+
+
+
+
+
 
 
     }

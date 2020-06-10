@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Estimating.ProgressReporter.Services
 {
+    /// <summary>
+    /// EstimateDataService retrieves SystemEstimate objects to run the system-by-system reports (different than cost code report)
+    /// </summary>
     public class EstimateDataService : IEstimateDataService
     {
         private List<SystemEstimate> _systemEstimateList;

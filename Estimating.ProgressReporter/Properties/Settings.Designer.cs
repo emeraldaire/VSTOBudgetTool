@@ -27,9 +27,9 @@ namespace Estimating.ProgressReporter.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=EAI-LAP-NBGAME\\SQLEXPRESS;Initial Catalog=Estimating_Dev;Integrated S" +
             "ecurity=True")]
-        public string Estimating {
+        public string Estimate {
             get {
-                return ((string)(this["Estimating"]));
+                return ((string)(this["Estimate"]));
             }
         }
         

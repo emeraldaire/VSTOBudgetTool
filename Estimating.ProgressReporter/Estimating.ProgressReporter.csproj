@@ -61,6 +61,7 @@
     <Compile Include="Interfaces\Model\IPhaseCode.cs" />
     <Compile Include="Interfaces\Model\ISystemModel.cs" />
     <Compile Include="Interfaces\Model\ISystemReport.cs" />
+    <Compile Include="Model\EstimateTransaction.cs" />
     <Compile Include="Model\ReportModel.cs" />
     <Compile Include="Interfaces\Services\IComparatorService.cs" />
     <Compile Include="Interfaces\Services\IModelReportingService.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Repository\ModelDataRepository.cs" />
     <Compile Include="Repository\ReportDataRepository.cs" />
     <Compile Include="Services\ComparatorService.cs" />
+    <Compile Include="Services\ConnectionStringService.cs" />
     <Compile Include="Services\CostCodeDataService.cs" />
     <Compile Include="Services\EstimateDataService.cs" />
     <Compile Include="Services\EstimateModelService.cs" />

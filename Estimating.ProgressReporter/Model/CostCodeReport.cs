@@ -85,8 +85,8 @@ namespace Estimating.ProgressReporter.Model
                     foreach(string p in reportedPhaseCodes)
                     {
                         //Assign comparison hours to the "BudgetedHours" property.
-                        int budgetedHours = _costCodeDataService.GetBudgetedHoursByPhaseCode(p.ToString());
-                        int actualHours = _costCodeDataService.GetActualHoursByPhaseCode(p.ToString());
+                        double budgetedHours = _costCodeDataService.GetBudgetedHoursByPhaseCode(p.ToString());
+                        double actualHours = _costCodeDataService.GetActualHoursByPhaseCode(p.ToString());
                         
                         CostCodeResults.Add(new CostCodeResult(p.ToString())
                         {
@@ -127,7 +127,9 @@ namespace Estimating.ProgressReporter.Model
                     }
                     else
                     {
-                        throw new Exception($"Earned hours for {c.PhaseCode} failed to populate.  Please reference the CostCodeReport module to find out more.");
+                        c.EarnedActualRatio = 0;
+                        c.ProjectionStatus = GetProjectionStatus(c.EarnedActualRatio);
+                        //throw new Exception($"Earned hours for {c.PhaseCode} failed to populate.  Please reference the CostCodeReport module to find out more.");
                     }
                 }
 

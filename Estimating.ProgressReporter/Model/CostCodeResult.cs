@@ -12,13 +12,13 @@ namespace Estimating.ProgressReporter.Model
         public string PhaseCode { get; set; }
 
         //Budgeted Hours
-        public int BudgetedHours { get; set; } = 0;
+        public double BudgetedHours { get; set; } = 0;
         //Earned hours are the budgeted hours from the Estimating sheet?
-        public int EarnedHours { get; set; }
+        public double EarnedHours { get; set; }
         //Actual hours are the billed hours read from the SPECTRUM (or Powertrack) table.
-        private int _actualHours;
+        private double _actualHours;
 
-        public int ActualHours
+        public double ActualHours
         {
             get { return _actualHours; }
             set 

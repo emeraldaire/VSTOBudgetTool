@@ -14,8 +14,6 @@ namespace Estimating.ProgressReporter.Services
     public class CostCodeDataService
     {
         private string _jobNumber;
-        private List<SystemEstimate> _systemEstimateList;
-        private SQLService.SQLHelper _sqlControl;
         private string estimateDatabaseString;
         private string spectrumDatabaseString;
 
@@ -26,8 +24,8 @@ namespace Estimating.ProgressReporter.Services
             try
             {
                 //Attempt to populate the connection strings.
-                estimateDatabaseString = Properties.Settings.Default.Estimating_Dev;
-                spectrumDatabaseString = Properties.Settings.Default.SPECTRUM;
+                estimateDatabaseString = ConnectionStringService.GetConnectionString("Estimate");
+                spectrumDatabaseString = ConnectionStringService.GetConnectionString("Spectrum");
             }
             catch (Exception)
             {
@@ -41,9 +39,10 @@ namespace Estimating.ProgressReporter.Services
         /// </summary>
         /// <param name="phaseCode"></param>
         /// <returns></returns>
-        public int GetActualHoursByPhaseCode(string phaseCode)
+        public double GetActualHoursByPhaseCode(string phaseCode)
         {
             phaseCode = phaseCode.Remove(4, 1);
+           
             SQLControl sql = new SQLControl(spectrumDatabaseString);
             //sql.AddParam("@jobNumber", _jobNumber);
             sql.AddParam("@jobNumber", "   " + _jobNumber);
@@ -68,7 +67,7 @@ namespace Estimating.ProgressReporter.Services
             {
                 //int budgetedHours = Convert.ToInt32(sql.DBDT.Rows[0].ItemArray[0].ToString());
                 double actualHours = Convert.ToDouble(sql.DBDT.Rows[0].ItemArray[0].ToString());
-                return (int)actualHours;
+                return actualHours;
             }
         }
 
@@ -80,7 +79,7 @@ namespace Estimating.ProgressReporter.Services
         /// </remarks>
         /// <param name="phaseCode"></param>
         /// <returns></returns>
-        public int GetEarnedHours(string systemName, string phaseCode)
+        public double GetEarnedHours(string systemName, string phaseCode)
         {
 
             if (ValidateSystemName(systemName))
@@ -105,7 +104,7 @@ namespace Estimating.ProgressReporter.Services
                 }
                 else
                 {
-                    int earnedHours = Convert.ToInt32(sql.DBDT.Rows[0].ItemArray[0].ToString());
+                    double earnedHours = Convert.ToDouble(sql.DBDT.Rows[0].ItemArray[0].ToString());
                     return earnedHours;
                 } 
             }
@@ -121,7 +120,7 @@ namespace Estimating.ProgressReporter.Services
         /// <param name="phaseCode"></param>
         /// <returns></returns>
 
-        public int GetBudgetedHoursByPhaseCode(string phaseCode)
+        public double GetBudgetedHoursByPhaseCode(string phaseCode)
         {
             phaseCode = phaseCode.Remove(4, 1);
             SQLControl sql = new SQLControl(spectrumDatabaseString);
@@ -148,7 +147,7 @@ namespace Estimating.ProgressReporter.Services
             { 
                 //int budgetedHours = Convert.ToInt32(sql.DBDT.Rows[0].ItemArray[0].ToString());
                 double budgetedHours = Convert.ToDouble(sql.DBDT.Rows[0].ItemArray[0].ToString());
-                return (int)budgetedHours;
+                return budgetedHours;
             }
         }
 
@@ -159,6 +158,10 @@ namespace Estimating.ProgressReporter.Services
         /// <returns></returns>
         public bool ValidateSystemName(string systemName)
         {
+            //To avoid displaying multiple error messages for the same system, a list of systems for which errors have been displayed is kept.  When the next error
+            //is triggered, the message will only display if the system is not found in this list. 
+            List<string> uniqueSystemsList = new List<string>();
+
             SQLControl sql = new SQLControl(estimateDatabaseString);
             sql.AddParam("@jobNumber", _jobNumber);
             sql.AddParam("@systemName", systemName);
@@ -169,8 +172,18 @@ namespace Estimating.ProgressReporter.Services
             }
             else if(sql.DBDT.Rows.Count == 0)
             {
-                MessageBox.Show("The system: " + systemName + " was not found in the Estimate record.  This could be due to a mismatch between the case/spelling used in " +
-                    "CSV report file.  Check the Estimate sheet for the job and make sure the system names match exactly.  If they do not, alter the CSV file entry and try again");
+                if (uniqueSystemsList.Contains(systemName))
+                {
+                    //Do nothing.
+                }
+                else
+                {
+                    MessageBox.Show("The system: " + systemName + " was not found in the Estimate record.  This could be due to a mismatch between the case/spelling used in " +
+                        "CSV report file.  Check the Estimate sheet for the job and make sure the system names match exactly.  If they do not, alter the CSV file entry and try again");
+
+                    //Add the system name to the uniqueSystemsList so that no more error messages appear for this system.
+                    uniqueSystemsList.Add(systemName);
+                }
                 return false;
             }
             else
@@ -178,7 +191,6 @@ namespace Estimating.ProgressReporter.Services
                 return true;
             }
         }
-
 
     }
 }
