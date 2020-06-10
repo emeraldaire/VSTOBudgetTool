@@ -12,7 +12,7 @@ namespace Estimating.ProgressReporter.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -27,19 +27,31 @@ namespace Estimating.ProgressReporter.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=EAI-LAP-NBGAME\\SQLEXPRESS;Initial Catalog=Estimating_Dev;Integrated S" +
             "ecurity=True")]
-        public string Estimating {
+        public string Estimate {
             get {
-                return ((string)(this["Estimating"]));
+                return ((string)(this["Estimate"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=EAI-LAP-NBGAME\\SQLEXPRESS;Initial Catalog=Estimating_Dev;Integrated S" +
-            "ecurity=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=SPECTRUM;Integrated Security=True;Connect Timeout=30;Encrypt=False;Tr" +
+            "ustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" +
+            "")]
         public string SPECTRUM {
             get {
                 return ((string)(this["SPECTRUM"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ADEAI-ALT\\TRIMBLE;Initial Catalog=Estimate_Dev;Integrated Security=Tr" +
+            "ue;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationInte" +
+            "nt=ReadWrite;MultiSubnetFailover=False")]
+        public string Estimating_Dev {
+            get {
+                return ((string)(this["Estimating_Dev"]));
             }
         }
     }
