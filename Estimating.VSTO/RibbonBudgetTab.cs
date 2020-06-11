@@ -39,7 +39,7 @@ namespace Estimating.VSTO
             //performed by the JobNumberValidation object upon instantiation. 
             JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text);
 
-            if (validationControl.IsValidJobNumber)
+            if (validationControl.IsValidJobNumber && validationControl.HasEstimateData(validationControl.ValidationResult))
             {
                 //Grab the validated job number.
                 string jobNumber = txtJobNumber.Text;
@@ -144,12 +144,26 @@ namespace Estimating.VSTO
 
             if (validationControl.IsValidJobNumber)
             {
-                EstimateHelper estimateHelper = new EstimateHelper();
+                EstimateHelper estimateHelper = new EstimateHelper(Globals.ThisAddIn.Application);
                 //Try to activate the 'Main Form' tab of the Estimate sheet.  If the attempt is successful, then the process for saving estimate data 
                 //will move ahead.  Otherwise, an error message will be shown to the user. 
                 if (estimateHelper.CalibratePosition())
                 {
                     List<SystemEstimate> systemEstimateList = estimateHelper.PopulateSystemList();
+                    if(systemEstimateList.Count > 0 && systemEstimateList != null)
+                    {
+                        try
+                        {
+                            EstimateRecordingService recordingService = new EstimateRecordingService(txtJobNumber.Text);
+                            recordingService.Commit(systemEstimateList);
+                            MessageBox.Show("The estimate was successfully saved.  You may now kiss the bride.");
+                        }
+                        catch (Exception)
+                        {
+
+                            throw;
+                        }
+                    }
                 }
                 else
                 {

@@ -25,9 +25,9 @@ namespace Estimating.VSTO.Reporting
         Color BudgetRecordColor;
         Color ActualHeaderColor;
         Color ActualRecordColor;
-        Color BudgetSummaryRowColor;
-        Color ActualSummaryRowColor;
-        Color LargeHeaderColor;
+        //Color BudgetSummaryRowColor;
+        //Color ActualSummaryRowColor;
+        //Color LargeHeaderColor;
 
         //FORMATTING VALUES
         int FontSizeHeader = 20;
