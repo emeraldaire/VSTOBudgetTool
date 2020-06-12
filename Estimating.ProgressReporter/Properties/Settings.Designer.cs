@@ -25,8 +25,9 @@ namespace Estimating.ProgressReporter.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=EAI-LAP-NBGAME\\SQLEXPRESS;Initial Catalog=Estimating_Dev;Integrated S" +
-            "ecurity=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ADEAI-ALT\\TRIMBLE;Initial Catalog=BudgetVSTO;Integrated Security=True" +
+            ";Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent" +
+            "=ReadWrite;MultiSubnetFailover=False")]
         public string Estimate {
             get {
                 return ((string)(this["Estimate"]));

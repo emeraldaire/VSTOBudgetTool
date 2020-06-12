@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace Estimating.VSTO.Helpers
 {
@@ -48,14 +49,17 @@ namespace Estimating.VSTO.Helpers
         //Column for 0602
         private int RFRPipePhaseCodeColumn = 12;
 
-        public EstimateHelper()
+        public EstimateHelper(Microsoft.Office.Interop.Excel.Application excel)
         {
             //Workbook newWorkbook = Globals.ThisAddIn.Application.Workbooks.Add();
-            Excel = Globals.ThisAddIn.Application;
-            Excel.Visible = true;
+            //Excel = Globals.ThisAddIn.Application;
+            Excel = excel;
+            //Excel = (Excel.Application)ExcelDnaUtil.Application;
+            //Excel.Visible = false;
             Excel.DisplayAlerts = false;
 
             estimateWorkbook = Excel.ActiveWorkbook;
+            //estimateWorkbook = ((Microsoft.Office.Interop.Excel.Application)Marshal.GetActiveObject("Excel.Application").ActiveWorkbook;
             //reportWorksheet = (_Worksheet)reportWorkbook.Worksheets.Add();
             estimateWorksheet = estimateWorkbook.ActiveSheet;
         }
@@ -78,7 +82,7 @@ namespace Estimating.VSTO.Helpers
                     estimateWorkbook.Sheets["MainForm"].Activate();
                     return true;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return false;
                 }

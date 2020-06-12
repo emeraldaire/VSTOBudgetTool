@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Estimate" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=EAI-LAP-NBGAME\SQLEXPRESS;Initial Catalog=Estimating_Dev;Integrated Security=True</Value>
+      <Value Profile="(Default)">Data Source=ADEAI-ALT\TRIMBLE;Initial Catalog=BudgetVSTO;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</Value>
     </Setting>
     <Setting Name="SPECTRUM" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Data Source=SPECTRUM;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</Value>

@@ -1,5 +1,4 @@
 ﻿using Estimating.ProgressReporter.Model;
-using Estimating.SQLService;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -15,7 +14,6 @@ namespace Estimating.ProgressReporter.Services
     public class EstimateDataService : IEstimateDataService
     {
         private List<SystemEstimate> _systemEstimateList;
-        private SQLService.SQLHelper _sqlControl;
 
         public List<SystemEstimate> GetSystemEstimatesByJobNumber(string jobNumber)
         {

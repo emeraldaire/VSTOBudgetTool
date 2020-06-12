@@ -22,6 +22,7 @@ namespace Estimating.VSTO.Helpers
     {
         public JobNumberValidationResult ValidationResult { get; }
         public bool IsValidJobNumber { get; }
+        
         private List<string> _activeEstimateJobNumbers { get; set; }
         private JobNumberRepository _jobNumberRepository { get; set; }
 
@@ -34,6 +35,7 @@ namespace Estimating.VSTO.Helpers
             //Obtain amd handle the validation result.  Consider encapsulating this class into a custom error.
             ValidationResult = ValidateJobNumberEntry(jobNumber);
             IsValidJobNumber = IsValid(ValidationResult);
+            //HasEstimateData = IsActiveJobNumber(ValidationResult);
         }
 
         private JobNumberValidationResult ValidateJobNumberEntry(string jobNumber)
@@ -61,6 +63,12 @@ namespace Estimating.VSTO.Helpers
             return JobNumberValidationResult.Success;
         }
 
+        /// <summary>
+        /// Returns true if the job number meets all formatting requirements and false otherwise.  Also returns true for job numbers meeting formats, but not present
+        /// in the Estimating database.  To test if a job number is represented in the Estimating database, use the 'IsActiveJobNumber' method in this class.
+        /// </summary>
+        /// <param name="validationResult"></param>
+        /// <returns></returns>
         private bool IsValid(JobNumberValidationResult validationResult)
         {
             switch (validationResult)
@@ -75,8 +83,7 @@ namespace Estimating.VSTO.Helpers
                     MessageBox.Show("Job numbers must be 7 digits with no hyphens, dashes, or non-numeric characters.  (Example: 2170507)", "Format Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 case JobNumberValidationResult.NoEstimate:
-                    MessageBox.Show("No estimate was found for this job number.  If this is a valid job number, please contact the Estimating department and try again after they save a record of the estimate data.", "No Estimate Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return false;
+                    return true;
                 case JobNumberValidationResult.Success:
                     return true;
                 default:
@@ -84,6 +91,32 @@ namespace Estimating.VSTO.Helpers
             }
         }
 
+        /// <summary>
+        /// Returns false if the job number cannot be found in the Estimating database, which means the estimate data was never successfully
+        /// committed to the record. NOTE: Returns true for every other case. Use 'IsValid' method of this class to trap other result status.
+        /// This function is used when importing field reports.
+        /// </summary>
+        /// <param name="validationResult"></param>
+        /// <returns></returns>
+        public bool HasEstimateData(JobNumberValidationResult validationResult)
+        {
+            switch (validationResult)
+            {
+                case JobNumberValidationResult.NoEstimate:
+                    MessageBox.Show("No estimate was found for this job number.  If this is a valid job number, please contact the Estimating department and try again after they save a record of the estimate data.", "No Comparison Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return false;
+                case JobNumberValidationResult.Success:
+                    return true;
+                case JobNumberValidationResult.NullOrEmpty:
+                    return true;
+                case JobNumberValidationResult.NonNumeric:
+                    return true;
+                case JobNumberValidationResult.IncorrectLength:
+                    return true;
+                default:
+                    return false;
+            }
+        }
 
 
     }

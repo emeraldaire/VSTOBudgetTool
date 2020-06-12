@@ -1,5 +1,4 @@
 ﻿using Estimating.ProgressReporter.Model;
-using Estimating.SQLService;
 using SQLManager;
 using System;
 using System.Collections.Generic;
