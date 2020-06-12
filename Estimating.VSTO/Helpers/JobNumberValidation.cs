@@ -25,12 +25,19 @@ namespace Estimating.VSTO.Helpers
         
         private List<string> _activeEstimateJobNumbers { get; set; }
         private JobNumberRepository _jobNumberRepository { get; set; }
-
-        public JobNumberValidation(string jobNumber)
+        private bool isSaveOperation { get; }
+        public JobNumberValidation(string jobNumber, bool IsSaveOperation)
         {
             //Get the list of job numbers associated with active estimates. 
             _jobNumberRepository = new JobNumberRepository();
-            _activeEstimateJobNumbers = _jobNumberRepository.GetAll();
+            isSaveOperation = IsSaveOperation; 
+
+            //Ignore the active job number list if the operation is a save operation.
+            if (isSaveOperation == false)
+            {
+                _activeEstimateJobNumbers = new List<string>();
+                _activeEstimateJobNumbers = _jobNumberRepository.GetAll();
+            }
 
             //Obtain amd handle the validation result.  Consider encapsulating this class into a custom error.
             ValidationResult = ValidateJobNumberEntry(jobNumber);
@@ -55,9 +62,12 @@ namespace Estimating.VSTO.Helpers
             {
                 return JobNumberValidationResult.IncorrectLength;
             }
-            else if(!_activeEstimateJobNumbers.Contains(jobNumber))
+            else if (isSaveOperation == false)
             {
-                return JobNumberValidationResult.NoEstimate;
+                if ( _activeEstimateJobNumbers == null || !_activeEstimateJobNumbers.Contains(jobNumber))
+                {
+                    return JobNumberValidationResult.NoEstimate;
+                }
             };
 
             return JobNumberValidationResult.Success;

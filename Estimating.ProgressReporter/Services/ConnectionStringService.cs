@@ -40,7 +40,7 @@ namespace Estimating.ProgressReporter.Services
             switch (databaseName)
             {
                 case "Estimate":
-                    return Properties.Settings.Default.Estimating_Dev;
+                    return Properties.Settings.Default.Estimate;
                 case "Spectrum":
                     return Properties.Settings.Default.SPECTRUM;
                 default:
