@@ -37,7 +37,7 @@ namespace Estimating.VSTO
         {
             //Validate and assign the job number before opening the file dialog window.  Validation is 
             //performed by the JobNumberValidation object upon instantiation. 
-            JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text);
+            JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text, IsSaveOperation:false);
 
             if (validationControl.IsValidJobNumber && validationControl.HasEstimateData(validationControl.ValidationResult))
             {
@@ -140,7 +140,7 @@ namespace Estimating.VSTO
 
             //Validate and assign the job number before opening the file dialog window.  Validation is 
             //performed by the JobNumberValidation object upon instantiation. 
-            JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text);
+            JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text, IsSaveOperation:true);
 
             if (validationControl.IsValidJobNumber)
             {
@@ -156,7 +156,7 @@ namespace Estimating.VSTO
                         {
                             EstimateRecordingService recordingService = new EstimateRecordingService(txtJobNumber.Text);
                             recordingService.Commit(systemEstimateList);
-                            MessageBox.Show("The estimate was successfully saved.  You may now kiss the bride.");
+                            MessageBox.Show("The estimate for Job Number: " + txtJobNumber.Text + " was successfully saved.", "Estimate Saved");
                         }
                         catch (Exception)
                         {
