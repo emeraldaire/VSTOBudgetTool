@@ -42,6 +42,37 @@ namespace Estimating.ProgressReporter.Repository
             }
         }
 
+        /// <summary>
+        /// Returns true if the job number is found in the estimating database.  Only one estimate record is allowed per job number.
+        /// </summary>
+        /// <param name="jobNumber"></param>
+        /// <returns></returns>
+        public bool IsDuplicateJobNumber(string jobNumber)
+        {
+            using (SQLControl sql = new SQLControl(ConnectionStringService.GetConnectionString("Estimate")))
+            {
+                sql.AddParam("@jobNumber", jobNumber);
+                sql.ExecQuery("SELECT * FROM EstimateHeader WHERE JobNumber = @jobNumber");
+                
+                if(sql.HasException())
+                {
+                    throw new Exception("Error in SQLControl class while attempting to detect duplicate job numbers.");
+                }
+
+                if(sql.DBDT.Rows.Count == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+
+            };
+
+        }
+
+
         public string GetJobNumberByName(string jobName)
         {
             return null;
