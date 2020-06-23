@@ -87,9 +87,10 @@ namespace Estimating.ProgressReporter.Model
                         CostCodeResults = new List<CostCodeResult>();
                         //Instantiate the CostCodeResult objects by reading the phase code name 
                         foreach (string p in reportedPhaseCodes)
-                        {
+                        { 
                             //Assign comparison hours to the "BudgetedHours" property.
-                            double budgetedHours = _costCodeDataService.GetBudgetedHoursByPhaseCode(p.ToString());
+                            //double budgetedHours = _costCodeDataService.GetBudgetedHoursByPhaseCode(p.ToString());
+                            double budgetedHours = _costCodeDataService.GetTeamBudgetHours(p.ToString());
                             double actualHours = _costCodeDataService.GetActualHoursByPhaseCode(p.ToString());
                             double projectedHours = _costCodeDataService.GetProjectedHoursByPhaseCode(p.ToString());
 

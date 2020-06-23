@@ -121,7 +121,7 @@ namespace Estimating.VSTO.Reporting
                     //UOM (type)
                     reportWorksheet.Cells[recordRow, 3] = GetUnitOfMeasurement(cc.UnitOfMeasurement);
                     //Hours (Budgeted)
-                    reportWorksheet.Cells[recordRow, 4] = cc.BudgetedHours;
+                    reportWorksheet.Cells[recordRow, 4] = cc.ProjectedHours;
 
                     //ACTUAL
                     //Units (Actual)
@@ -133,7 +133,7 @@ namespace Estimating.VSTO.Reporting
                     reportWorksheet.Cells[recordRow, 7].NumberFormat = "0%";
 
                     //Team Budget
-                    reportWorksheet.Cells[recordRow, 8] = cc.ProjectedHours;
+                    reportWorksheet.Cells[recordRow, 8] = cc.BudgetedHours;
 
                     //Earned Hrs
                     reportWorksheet.Cells[recordRow, 9] = cc.EarnedHours;
