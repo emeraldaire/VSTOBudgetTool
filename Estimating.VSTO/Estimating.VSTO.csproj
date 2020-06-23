@@ -33,7 +33,7 @@
     <PublishUrl>\\sbs\applications\BudgetVSTO\</PublishUrl>
     <InstallUrl>\\sbs\applications\BudgetVSTO\</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.23</ApplicationVersion>
+    <ApplicationVersion>1.0.0.24</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -180,6 +180,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Documentation\WalkthroughExample.cs" />
     <Compile Include="Helpers\CSVHelper.cs" />
     <Compile Include="Helpers\EstimateHelper.cs" />
     <Compile Include="Helpers\JobNumberValidation.cs" />
@@ -198,11 +199,11 @@
     <EmbeddedResource Include="RibbonBudgetTab.resx">
       <DependentUpon>RibbonBudgetTab.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Documentation\BasicFieldReport.csv" />
-    <None Include="Documentation\BluebeamFieldReport.csv" />
     <None Include="Documentation\Estimate Sheet Sample.xlsx" />
     <None Include="Documentation\Master Documentation.pdf" />
     <None Include="Documentation\SystemBySystemReporting.pdf" />
+    <None Include="Documentation\VSTOBudgetTracker.pdf" />
+    <None Include="Documentation\Working With Spaces.pdf" />
     <None Include="Estimating.VSTO_1_TemporaryKey.pfx" />
     <None Include="Estimating.VSTO_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">

@@ -151,7 +151,7 @@ namespace Estimating.ProgressReporter.Model
                     //PERCENTAGE COMPLETE
                     if (c.ProjectedHours > 0)
                     {
-                        c.PercentComplete = Math.Round((c.EarnedHours / c.ProjectedHours),2);
+                        c.PercentComplete = Math.Round((c.EarnedHours / c.BudgetedHours),2);
                     }
                     else
                     {

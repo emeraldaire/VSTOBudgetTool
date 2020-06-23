@@ -155,7 +155,7 @@ namespace Estimating.VSTO.Reporting
                     }
 
                     //Projected Hours
-                    reportWorksheet.Cells[recordRow, 12] = Math.Round((cc.ProjectedHours * cc.EarnedActualRatio), 2);
+                    reportWorksheet.Cells[recordRow, 12] = Math.Round((cc.BudgetedHours * cc.EarnedActualRatio), 2);
 
                     //Hours (Projected)
                     //TODO: Discuss calculation with Grant
