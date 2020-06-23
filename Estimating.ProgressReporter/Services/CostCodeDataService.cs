@@ -55,7 +55,7 @@ namespace Estimating.ProgressReporter.Services
             {
                 throw new Exception("Failure in the SQL class while retrieving Earned Hours.");
             }
-            else if (sql.DBDT.Rows.Count == 0)
+            else if (sql.DBDT.Rows.Count == 0 || sql.DBDT == null)
             {
                 //MessageBox.Show("There doesn't appear to be a record for the system: " + systemName + " in Job Number: " + _jobNumber + ". This could be:  \n" +
                 //    "1. Because of a mismatch in system names between the name contained in the estimate sheet and the name contained in the report. \n" +
@@ -127,7 +127,7 @@ namespace Estimating.ProgressReporter.Services
             sql.AddParam("@jobNumber", "   " + _jobNumber);
             sql.AddParam("@phaseCode", phaseCode);
             sql.AddParam("@costType", "L");
-            //sql.AddParam("@costType", "L");
+
             sql.ExecQuery("SELECT TOP(1) Original_Est_Hours FROM JC_PHASE_MASTER_MC WHERE Phase_Code = @phaseCode AND Job_Number = @jobNumber AND Cost_Type = @costType");
 
             //sql.ExecQuery("SELECT * FROM EstimateMain");
@@ -149,6 +149,110 @@ namespace Estimating.ProgressReporter.Services
                 return budgetedHours;
             }
         }
+
+
+        /// <summary>
+        /// Returns the "Projected_Hours" field from the "JC_PROJ_COST_HISTORY_MC" table in SPECTRUM.
+        /// </summary>
+        /// <param name="phaseCode"></param>
+        /// <returns></returns>
+        public double GetProjectedHoursByPhaseCode(string phaseCode)
+        {
+            phaseCode = phaseCode.Remove(4, 1);
+            SQLControl sql = new SQLControl(spectrumDatabaseString);
+            //sql.AddParam("@jobNumber", _jobNumber);
+            sql.AddParam("@jobNumber", "   " + _jobNumber);
+            sql.AddParam("@phaseCode", phaseCode);
+            sql.AddParam("@costType", "L");
+            
+            sql.ExecQuery("SELECT SUM(Projected_Hours) FROM JC_PROJ_COST_HISTORY_MC WHERE Phase = @phaseCode AND Job = @jobNumber AND Cost_Type = @costType");
+
+            //sql.ExecQuery("SELECT * FROM EstimateMain");
+            if (sql.HasException())
+            {
+                throw new Exception("Failure in the SQL class while retrieving Earned Hours.");
+            }
+            else if (sql.DBDT.Rows.Count == 0)
+            {
+                //MessageBox.Show("There doesn't appear to be a record for the system: " + systemName + " in Job Number: " + _jobNumber + ". This could be:  \n" +
+                //    "1. Because of a mismatch in system names between the name contained in the estimate sheet and the name contained in the report. \n" +
+                //    "2. Because a phase code was included on the CSV report that wasn't included in the original Estimate." );
+                return 0;
+            }
+            else
+            {
+                //int budgetedHours = Convert.ToInt32(sql.DBDT.Rows[0].ItemArray[0].ToString());
+                double projectedHours = Convert.ToDouble(sql.DBDT.Rows[0].ItemArray[0].ToString());
+                return projectedHours;
+            }
+        }
+
+        /// <summary>
+        /// Returns the summed earnedhours from EstimateMain for provided jobnumber and phase code
+        /// </summary>
+        /// <param name="phaseCode"></param>
+        /// <returns></returns>
+        public double GetTeamBudgetHours(string phaseCode)
+        {
+
+            if (ValidatePhaseCode(phaseCode))
+            {
+                SQLControl sql = new SQLControl(estimateDatabaseString);
+                //sql.AddParam("@jobNumber", _jobNumber);
+                sql.AddParam("@jobNumber", _jobNumber);
+                sql.AddParam("@phaseCode", phaseCode);
+                //sql.AddParam("@costType", "L");
+                sql.ExecQuery("SELECT SUM(EarnedHours) FROM EstimateMain WHERE JobNumber = @jobNumber AND PhaseCode = @phaseCode");
+
+                //sql.ExecQuery("SELECT * FROM EstimateMain");
+                if (sql.HasException())
+                {
+                    throw new Exception("Failure in the SQL class while retrieving Earned Hours.");
+                }
+                else if (sql.DBDT.Rows.Count == 0 || sql.DBDT == null)
+                {
+                    //MessageBox.Show("There doesn't appear to be a record for the system: " + systemName + " in Job Number: " + _jobNumber + ". This could be:  \n" +
+                    //    "1. Because of a mismatch in system names between the name contained in the estimate sheet and the name contained in the report. \n" +
+                    //    "2. Because a phase code was included on the CSV report that wasn't included in the original Estimate." );
+                    return 0;
+                }
+                else
+                {
+                    //int budgetedHours = Convert.ToInt32(sql.DBDT.Rows[0].ItemArray[0].ToString());
+                    //int teamBudgetHours = Convert.ToInt32(sql.DBDT.Rows[0].ItemArray[0].ToString());
+                    double teamBudgetHours = Convert.ToDouble(sql.DBDT.Rows[0].ItemArray[0].ToString());
+                    return teamBudgetHours;
+                } 
+            }
+            else
+            {
+                return 0;
+            }
+
+
+        }
+
+        private bool ValidatePhaseCode(string phaseCode)
+        {
+            SQLControl sql = new SQLControl(estimateDatabaseString);
+            sql.AddParam("@jobNumber", _jobNumber);
+            sql.AddParam("@phaseCode", phaseCode);
+            sql.ExecQuery("SELECT * FROM EstimateMain WHERE JobNumber = @jobNumber AND PhaseCode = @phaseCode");
+            if (sql.HasException())
+            {
+                throw new Exception(sql.Exception.ToString());
+            }
+            else if (sql.DBDT.Rows.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+
 
         /// <summary>
         /// Validates the provided system name by matching it with a corresponding entry in the 'EstimateMain' table.

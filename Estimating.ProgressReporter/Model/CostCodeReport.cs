@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
 namespace Estimating.ProgressReporter.Model
@@ -80,19 +81,32 @@ namespace Estimating.ProgressReporter.Model
                 //Use the list of reported PhaseCodes to read and assign the total budgeted hours and actual hours for that phase code from SPECTRUM.  
                 if(reportedPhaseCodes != null && reportedPhaseCodes.Count != 0)
                 {
-                    CostCodeResults = new List<CostCodeResult>();
-                    //Instantiate the CostCodeResult objects by reading the phase code name 
-                    foreach(string p in reportedPhaseCodes)
+
+                    try
                     {
-                        //Assign comparison hours to the "BudgetedHours" property.
-                        double budgetedHours = _costCodeDataService.GetBudgetedHoursByPhaseCode(p.ToString());
-                        double actualHours = _costCodeDataService.GetActualHoursByPhaseCode(p.ToString());
+                        CostCodeResults = new List<CostCodeResult>();
+                        //Instantiate the CostCodeResult objects by reading the phase code name 
+                        foreach (string p in reportedPhaseCodes)
+                        { 
+                            //Assign comparison hours to the "BudgetedHours" property.
+                            //double budgetedHours = _costCodeDataService.GetBudgetedHoursByPhaseCode(p.ToString());
+                            double budgetedHours = _costCodeDataService.GetTeamBudgetHours(p.ToString());
+                            double actualHours = _costCodeDataService.GetActualHoursByPhaseCode(p.ToString());
+                            double projectedHours = _costCodeDataService.GetProjectedHoursByPhaseCode(p.ToString());
+
+                            CostCodeResults.Add(new CostCodeResult(p.ToString())
+                            {
+                                BudgetedHours = budgetedHours,
+                                ProjectedHours = projectedHours,
+                                ActualHours = actualHours
+                            });
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Please check that budget information for this job exists in SPECTRUM.");
+                        throw new Exception("Failure to retreive populated datatable from SPECTRUM when searching for budget information on job " + _jobNumber);
                         
-                        CostCodeResults.Add(new CostCodeResult(p.ToString())
-                        {
-                            BudgetedHours = budgetedHours,
-                            ActualHours = actualHours
-                        }) ;
                     }
                 }
                 else
@@ -120,10 +134,12 @@ namespace Estimating.ProgressReporter.Model
                 //The CostCodeResult objects now need to be post-processed to calculate the reporting parameters (percent complete, over/under, etc.)
                 foreach (CostCodeResult c in CostCodeResults)
                 {
-                    if (c.EarnedHours != 0)
+                    //EARNEDACTUAL RATIO
+                    if (c.EarnedHours > 0)
                     {
                         c.EarnedActualRatio =Math.Round(((Double)c.ActualHours / c.EarnedHours), 2);
                         c.ProjectionStatus = GetProjectionStatus(c.EarnedActualRatio);
+                        
                     }
                     else
                     {
@@ -131,6 +147,17 @@ namespace Estimating.ProgressReporter.Model
                         c.ProjectionStatus = GetProjectionStatus(c.EarnedActualRatio);
                         //throw new Exception($"Earned hours for {c.PhaseCode} failed to populate.  Please reference the CostCodeReport module to find out more.");
                     }
+
+                    //PERCENTAGE COMPLETE
+                    if (c.ProjectedHours > 0)
+                    {
+                        c.PercentComplete = Math.Round((c.EarnedHours / c.ProjectedHours),2);
+                    }
+                    else
+                    {
+                        c.PercentComplete = 0;
+                    }
+
                 }
 
             }

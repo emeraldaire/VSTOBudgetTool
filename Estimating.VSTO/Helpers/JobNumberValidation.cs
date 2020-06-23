@@ -22,7 +22,7 @@ namespace Estimating.VSTO.Helpers
     {
         public JobNumberValidationResult ValidationResult { get; }
         public bool IsValidJobNumber { get; }
-        
+        public bool IsDuplicateEstimate { get; }
         private List<string> _activeEstimateJobNumbers { get; set; }
         private JobNumberRepository _jobNumberRepository { get; set; }
         private bool isSaveOperation { get; }
@@ -42,6 +42,7 @@ namespace Estimating.VSTO.Helpers
             //Obtain amd handle the validation result.  Consider encapsulating this class into a custom error.
             ValidationResult = ValidateJobNumberEntry(jobNumber);
             IsValidJobNumber = IsValid(ValidationResult);
+            IsDuplicateEstimate = IsDuplicate(jobNumber);
             //HasEstimateData = IsActiveJobNumber(ValidationResult);
         }
 
@@ -128,6 +129,27 @@ namespace Estimating.VSTO.Helpers
             }
         }
 
+        /// <summary>
+        /// Returns true if an estimate has already been recorded for the job number. 
+        /// </summary>
+        /// <remarks>
+        /// This is a bit of redundancy, since the presence of the job number is also detected by the ValidationResult. However, the logic involved cannot easily
+        /// be refactored right now, so I'm sticking this "extra" function here to trap duplicate job records.
+        /// </remarks>
+        /// <param name="jobNumber"></param>
+        /// <returns></returns>
+        private bool IsDuplicate(string jobNumber)
+        {
+            if(_jobNumberRepository.IsDuplicateJobNumber(jobNumber))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
 
     }
 }

@@ -144,38 +144,42 @@ namespace Estimating.VSTO
 
             if (validationControl.IsValidJobNumber)
             {
-                EstimateHelper estimateHelper = new EstimateHelper(Globals.ThisAddIn.Application);
-                //Try to activate the 'Main Form' tab of the Estimate sheet.  If the attempt is successful, then the process for saving estimate data 
-                //will move ahead.  Otherwise, an error message will be shown to the user. 
-                if (estimateHelper.CalibratePosition())
-                {
-                    List<SystemEstimate> systemEstimateList = estimateHelper.PopulateSystemList();
-                    if(systemEstimateList.Count > 0 && systemEstimateList != null)
-                    {
-                        try
-                        {
-                            EstimateRecordingService recordingService = new EstimateRecordingService(txtJobNumber.Text);
-                            recordingService.Commit(systemEstimateList);
-                            MessageBox.Show("The estimate for Job Number: " + txtJobNumber.Text + " was successfully saved.", "Estimate Saved");
-                        }
-                        catch (Exception)
-                        {
 
-                            throw;
+                if(!validationControl.IsDuplicateEstimate)
+                {
+                    EstimateHelper estimateHelper = new EstimateHelper(Globals.ThisAddIn.Application);
+                    //Try to activate the 'Main Form' tab of the Estimate sheet.  If the attempt is successful, then the process for saving estimate data 
+                    //will move ahead.  Otherwise, an error message will be shown to the user. 
+                    if (estimateHelper.CalibratePosition())
+                    {
+                        List<SystemEstimate> systemEstimateList = estimateHelper.PopulateSystemList();
+                        if (systemEstimateList.Count > 0 && systemEstimateList != null)
+                        {
+                            try
+                            {
+                                EstimateRecordingService recordingService = new EstimateRecordingService(txtJobNumber.Text);
+                                recordingService.Commit(systemEstimateList);
+                                MessageBox.Show("The estimate for Job Number: " + txtJobNumber.Text + " was successfully saved.", "Estimate Saved");
+                            }
+                            catch (Exception)
+                            {
+
+                                throw;
+                            }
                         }
                     }
+                    else
+                    {
+                        MessageBox.Show("To save Estimate data, the user must have the Estimate workbook open and be on the 'MainForm' tab.");
+                    }  
                 }
                 else
                 {
-                    MessageBox.Show("To save Estimate data, the user must have the Estimate workbook open and be on the 'MainForm' tab.");
-                } 
+                    MessageBox.Show("Sorry, but an estimate for this job already exists.");
+                }
             }
 
-
         }
-
-        
-
 
 
         #region "Dummy Code"
