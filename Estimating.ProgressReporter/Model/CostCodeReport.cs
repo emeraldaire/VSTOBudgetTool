@@ -102,10 +102,12 @@ namespace Estimating.ProgressReporter.Model
                             });
                         }
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
-                        MessageBox.Show("Please check that budget information for this job exists in SPECTRUM.");
-                        throw new Exception("Failure to retreive populated datatable from SPECTRUM when searching for budget information on job " + _jobNumber);
+                        //throw new Exception("Failure to retreive populated datatable from SPECTRUM when searching for budget information on job " + _jobNumber);
+                        //TODO: Add Logger here.
+                        MessageBox.Show(e.Message);
+
                         
                     }
                 }
@@ -151,7 +153,7 @@ namespace Estimating.ProgressReporter.Model
                     //PERCENTAGE COMPLETE
                     if (c.ProjectedHours > 0)
                     {
-                        c.PercentComplete = Math.Round((c.EarnedHours / c.ProjectedHours),2);
+                        c.PercentComplete = Math.Round((c.EarnedHours / c.BudgetedHours),2);
                     }
                     else
                     {

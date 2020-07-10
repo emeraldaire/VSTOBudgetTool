@@ -33,6 +33,8 @@ namespace Estimating.VSTO.Helpers
         string equipmentHoursPhaseCode = "0001-0901";
         string buildingTradeHoursPhaseCode = "0001-0801";
         string RFRPipeHoursePhaseCode = "0001-0602";
+        string controlsPhaseCode = "0001-0603";
+        string startTestPhaseCode = "0001-0605";
 
         //The Estimate sheet is hardcoded to allow only 103 rows.  Rather than mucking around with Interop.Excel, it's easier (however inelegant) here to simply 
         //iterate through the entire range to detect the listed systems.  'maxRow' specifies the total number of rows over which the application will run. If the
@@ -40,6 +42,12 @@ namespace Estimating.VSTO.Helpers
         private int maxRow { get; set; } = 103;
         //Set the reference row; this is the first row on which the application will begin to detect spreadsheet entries.
         int targetRow = 3;
+
+        //Quantity multiplier
+        private int systemMultiplier { get; set; }
+
+        //System Multiplier column
+        private int systemMultiplierColumn = 3;
         //Set the column number where the system type entries are located. 
         private int systemTypeColumn = 2;
         //Column for 0901
@@ -48,6 +56,13 @@ namespace Estimating.VSTO.Helpers
         private int buildingTradesPhaseCodeColumn = 9;
         //Column for 0602
         private int RFRPipePhaseCodeColumn = 12;
+
+        //Column for 0603
+        private int controlsPhaseCodeColumn = 15;
+        //Column for 0605
+        private int startTestPhaseCodeColumn = 20;
+
+
 
         public EstimateHelper(Microsoft.Office.Interop.Excel.Application excel)
         {
@@ -219,15 +234,22 @@ namespace Estimating.VSTO.Helpers
         /// <returns></returns>
         private SystemEstimate GenerateUndividedSystem(string systemName, int currentRow)
         {
-            int equipmentHours = AssignHoursToObject(currentRow, equipmentPhaseCodeColumn);
-            int buildingTradeHours = AssignHoursToObject(currentRow, buildingTradesPhaseCodeColumn);
-            int RFRHours = AssignHoursToObject(currentRow, RFRPipePhaseCodeColumn);
+
+            double equipmentHours = AssignHoursToObject(currentRow, equipmentPhaseCodeColumn);
+            double buildingTradeHours = AssignHoursToObject(currentRow, buildingTradesPhaseCodeColumn);
+            double RFRHours = AssignHoursToObject(currentRow, RFRPipePhaseCodeColumn);
+
+            double controlsHours = AssignHoursToObject(currentRow, controlsPhaseCodeColumn);
+            double startTestHours = AssignHoursToObject(currentRow, startTestPhaseCodeColumn);
 
             List<PhaseCode> phaseCodeList = new List<PhaseCode>()
             {
                 new PhaseCode(equipmentHoursPhaseCode){ EarnedHours = equipmentHours, AssociatedSystem = systemName},
                 new PhaseCode(buildingTradeHoursPhaseCode) { EarnedHours = buildingTradeHours, AssociatedSystem = systemName},
-                new PhaseCode(RFRPipeHoursePhaseCode){EarnedHours = RFRHours, AssociatedSystem = systemName}
+                new PhaseCode(RFRPipeHoursePhaseCode){EarnedHours = RFRHours, AssociatedSystem = systemName},
+                new PhaseCode(controlsPhaseCode){EarnedHours = controlsHours, AssociatedSystem = systemName},
+                new PhaseCode(startTestPhaseCode){EarnedHours =startTestHours, AssociatedSystem = systemName}
+
             };
 
             return new SystemEstimate(systemName){ PhaseCodes = phaseCodeList };
@@ -240,29 +262,43 @@ namespace Estimating.VSTO.Helpers
         /// <returns></returns>
         private SystemEstimate GeneratedDividedSystem(string systemName, int currentRow)
         {
-            int equipmentHours = GetSummedHours(currentRow, equipmentPhaseCodeColumn);
-            int buildingTradeHours = GetSummedHours(currentRow, buildingTradesPhaseCodeColumn);
-            int RFRHours = GetSummedHours(currentRow, RFRPipePhaseCodeColumn);
+            double equipmentHours = GetSummedHours(currentRow, equipmentPhaseCodeColumn);
+            double buildingTradeHours = GetSummedHours(currentRow, buildingTradesPhaseCodeColumn);
+            double RFRHours = GetSummedHours(currentRow, RFRPipePhaseCodeColumn);
+
+            double controlsHours = GetSummedHours(currentRow, controlsPhaseCodeColumn);
+            double startTestHours = GetSummedHours(currentRow, startTestPhaseCodeColumn);
 
             List<PhaseCode> phaseCodeList = new List<PhaseCode>()
             {
                 new PhaseCode(equipmentHoursPhaseCode){ EarnedHours = equipmentHours, AssociatedSystem = systemName},
                 new PhaseCode(buildingTradeHoursPhaseCode) { EarnedHours = buildingTradeHours, AssociatedSystem = systemName},
-                new PhaseCode(RFRPipeHoursePhaseCode){EarnedHours = RFRHours, AssociatedSystem = systemName}
+                new PhaseCode(RFRPipeHoursePhaseCode){EarnedHours = RFRHours, AssociatedSystem = systemName},
+                new PhaseCode(controlsPhaseCode){EarnedHours = controlsHours, AssociatedSystem = systemName},
+                new PhaseCode(startTestPhaseCode){EarnedHours =startTestHours, AssociatedSystem = systemName}
             };
 
             return new SystemEstimate(systemName) { PhaseCodes = phaseCodeList };
         }
 
         //Specify the cell where the phase code hours value is; if the value is null or blank, return 0.
-        private int AssignHoursToObject(int currentRow, int phaseCodeColumn)
+        private double AssignHoursToObject(int currentRow, int phaseCodeColumn)
         {
+            Range systemMultiplierCell = estimateWorksheet.Cells[currentRow, systemMultiplierColumn];
+            if(systemMultiplierCell.Value2 <= 0)
+            {
+                systemMultiplier = 1;
+            }
+            else
+            {
+                systemMultiplier = (int)systemMultiplierCell.Value2;
+            }
             //systemNameRange = estimateWorksheet.Cells[i, 1];
             Range hourEntry = estimateWorksheet.Cells[currentRow, phaseCodeColumn];
             
             if(hourEntry.Value2 != null)
             {
-                return(int)hourEntry.Value2;
+                return systemMultiplier*((double)hourEntry.Value2);
             }
             else
             {
@@ -277,10 +313,10 @@ namespace Estimating.VSTO.Helpers
         /// <param name="currentRow"></param>
         /// <param name="phaseCodeColumn"></param>
         /// <returns></returns>
-        private int GetSummedHours(int currentRow, int phaseCodeColumn)
+        private double GetSummedHours(int currentRow, int phaseCodeColumn)
         {
             //Initialize accumulator
-            int summedHours = 0;
+            double summedHours = 0;
             int numberOfDivisions = GetNumberOfDivisions(currentRow);
             for (int i = 0; i < numberOfDivisions; i++)
             {

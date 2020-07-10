@@ -22,6 +22,8 @@ namespace Estimating.ProgressReporter.Services
                     return new SqlConnection(GetConnectionString("Estimate"));
                 case "Spectrum":
                     return new SqlConnection(GetConnectionString("Spectrum"));
+                case "TimoutTest":
+                    return new SqlConnection(GetConnectionString("TimeoutTest"));
                 default:
                     return null;
             }
