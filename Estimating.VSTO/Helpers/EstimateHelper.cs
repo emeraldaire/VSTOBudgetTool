@@ -35,6 +35,7 @@ namespace Estimating.VSTO.Helpers
         string RFRPipeHoursePhaseCode = "0001-0602";
         string controlsPhaseCode = "0001-0603";
         string startTestPhaseCode = "0001-0605";
+        string columnJPhaseCode = "0004-0801";
 
         //The Estimate sheet is hardcoded to allow only 103 rows.  Rather than mucking around with Interop.Excel, it's easier (however inelegant) here to simply 
         //iterate through the entire range to detect the listed systems.  'maxRow' specifies the total number of rows over which the application will run. If the
@@ -62,6 +63,8 @@ namespace Estimating.VSTO.Helpers
         //Column for 0605
         private int startTestPhaseCodeColumn = 20;
 
+        //Column for 0004-0801 phase code
+        private int columnJPhaseCodeColumn = 10;
 
 
         public EstimateHelper(Microsoft.Office.Interop.Excel.Application excel)
@@ -241,6 +244,7 @@ namespace Estimating.VSTO.Helpers
 
             double controlsHours = AssignHoursToObject(currentRow, controlsPhaseCodeColumn);
             double startTestHours = AssignHoursToObject(currentRow, startTestPhaseCodeColumn);
+            double columnJHours = AssignHoursToObject(currentRow, columnJPhaseCodeColumn);
 
             List<PhaseCode> phaseCodeList = new List<PhaseCode>()
             {
@@ -248,7 +252,8 @@ namespace Estimating.VSTO.Helpers
                 new PhaseCode(buildingTradeHoursPhaseCode) { EarnedHours = buildingTradeHours, AssociatedSystem = systemName},
                 new PhaseCode(RFRPipeHoursePhaseCode){EarnedHours = RFRHours, AssociatedSystem = systemName},
                 new PhaseCode(controlsPhaseCode){EarnedHours = controlsHours, AssociatedSystem = systemName},
-                new PhaseCode(startTestPhaseCode){EarnedHours =startTestHours, AssociatedSystem = systemName}
+                new PhaseCode(startTestPhaseCode){EarnedHours =startTestHours, AssociatedSystem = systemName},
+                new PhaseCode(columnJPhaseCode){EarnedHours =startTestHours, AssociatedSystem = systemName}
 
             };
 
@@ -268,6 +273,7 @@ namespace Estimating.VSTO.Helpers
 
             double controlsHours = GetSummedHours(currentRow, controlsPhaseCodeColumn);
             double startTestHours = GetSummedHours(currentRow, startTestPhaseCodeColumn);
+            double columnJHours = GetSummedHours(currentRow, columnJPhaseCodeColumn);
 
             List<PhaseCode> phaseCodeList = new List<PhaseCode>()
             {
@@ -275,7 +281,8 @@ namespace Estimating.VSTO.Helpers
                 new PhaseCode(buildingTradeHoursPhaseCode) { EarnedHours = buildingTradeHours, AssociatedSystem = systemName},
                 new PhaseCode(RFRPipeHoursePhaseCode){EarnedHours = RFRHours, AssociatedSystem = systemName},
                 new PhaseCode(controlsPhaseCode){EarnedHours = controlsHours, AssociatedSystem = systemName},
-                new PhaseCode(startTestPhaseCode){EarnedHours =startTestHours, AssociatedSystem = systemName}
+                new PhaseCode(startTestPhaseCode){EarnedHours =startTestHours, AssociatedSystem = systemName},
+                new PhaseCode(columnJPhaseCode){EarnedHours =startTestHours, AssociatedSystem = systemName}
             };
 
             return new SystemEstimate(systemName) { PhaseCodes = phaseCodeList };
