@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estimating.VSTO", "Estimati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estimating.CSVHandler", "Estimating.CSVHandler\Estimating.CSVHandler.csproj", "{37F21A16-E43A-42DC-8455-D3BD2FB2B2FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estimating.Cache", "Estimating.Cache\Estimating.Cache.csproj", "{7F3C5CC0-E4E4-4797-B89E-CAD7E0DBFB8D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{37F21A16-E43A-42DC-8455-D3BD2FB2B2FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37F21A16-E43A-42DC-8455-D3BD2FB2B2FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37F21A16-E43A-42DC-8455-D3BD2FB2B2FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F3C5CC0-E4E4-4797-B89E-CAD7E0DBFB8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F3C5CC0-E4E4-4797-B89E-CAD7E0DBFB8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F3C5CC0-E4E4-4797-B89E-CAD7E0DBFB8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F3C5CC0-E4E4-4797-B89E-CAD7E0DBFB8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

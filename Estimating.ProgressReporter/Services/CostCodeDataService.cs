@@ -255,6 +255,7 @@ namespace Estimating.ProgressReporter.Services
 
         }
 
+
         private bool ValidateEstimatePhaseCode(string phaseCode)
         {
             SQLControl sql = new SQLControl(estimateDatabaseString);
