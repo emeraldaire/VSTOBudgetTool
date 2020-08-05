@@ -162,7 +162,7 @@ namespace Estimating.ProgressReporter.Services
             {
                 phaseCode = phaseCode.Remove(4, 1);
                 //SQLControl sql = new SQLControl(spectrumDatabaseString);
-                SQLControl sql = new SQLControl(ConnectionStringService.GetConnectionString("TimeoutTest"));
+                SQLControl sql = new SQLControl(spectrumDatabaseString);
 
                 //sql.AddParam("@jobNumber", _jobNumber);
                 sql.AddParam("@jobNumber", "   " + _jobNumber);
