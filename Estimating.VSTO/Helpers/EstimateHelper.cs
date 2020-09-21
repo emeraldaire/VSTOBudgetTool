@@ -40,7 +40,7 @@ namespace Estimating.VSTO.Helpers
         //The Estimate sheet is hardcoded to allow only 103 rows.  Rather than mucking around with Interop.Excel, it's easier (however inelegant) here to simply 
         //iterate through the entire range to detect the listed systems.  'maxRow' specifies the total number of rows over which the application will run. If the
         //dimensions of the spreadsheet change to accomodate more (very unlikely), adjust the value here.
-        private int maxRow { get; set; } = 103;
+        private int maxRow { get; set; } = 80;
         //Set the reference row; this is the first row on which the application will begin to detect spreadsheet entries.
         int targetRow = 3;
 
@@ -154,6 +154,8 @@ namespace Estimating.VSTO.Helpers
         /// </remarks>
         public List<SystemEstimate> PopulateSystemList()
         {
+            
+
             systemEstimateList = new List<SystemEstimate>();
             try
             {
@@ -161,29 +163,37 @@ namespace Estimating.VSTO.Helpers
                 for (int i = targetRow; i <= maxRow; i++)
                 {
                     systemNameRange = estimateWorksheet.Cells[i, 1];
-                    if (systemNameRange.Value2 != null && systemNameRange.Value2 != "" && HasTypeEntry(i))
+                    
+                    try
                     {
 
-                        //If the system is not divided, create a SystemEstimate object and add it to the List.
-                        if (!HasSubdivisions(i))
+                        if (systemNameRange.Value2 != null && systemNameRange.Value2 != "" && HasTypeEntry(i))
                         {
-                            //SystemEstimate currentSystem = GenerateUndividedSystem(systemNameRange.Value2, i);
-                            systemEstimateList.Add(GenerateUndividedSystem(systemNameRange.Value2, i));
+
+                            //If the system is not divided, create a SystemEstimate object and add it to the List.
+                            if (!HasSubdivisions(i))
+                            {
+                                //SystemEstimate currentSystem = GenerateUndividedSystem(systemNameRange.Value2, i);
+                                systemEstimateList.Add(GenerateUndividedSystem(systemNameRange.Value2, i));
+                            }
+                            //If the system is divided, first process all the subdivisions.  Then create a SystemEstimate object and add it to the List.
+                            else
+                            {
+                                systemEstimateList.Add(GeneratedDividedSystem(systemNameRange.Value2, i));
+                            }
+                            //bool dividedSystem = HasSubdivisions(i);
+                            //MessageBox.Show("System: " + systemNameRange.Value2.ToString() + " Divided System: " + dividedSystem.ToString());
                         }
-                        //If the system is divided, first process all the subdivisions.  Then create a SystemEstimate object and add it to the List.
-                        else
-                        {
-                            systemEstimateList.Add(GeneratedDividedSystem(systemNameRange.Value2, i));
-                        }
-                        //bool dividedSystem = HasSubdivisions(i);
-                        //MessageBox.Show("System: " + systemNameRange.Value2.ToString() + " Divided System: " + dividedSystem.ToString());
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Failure on line: " + i);
                     }
                 }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString());
-                throw;
             }
 
             return systemEstimateList;
