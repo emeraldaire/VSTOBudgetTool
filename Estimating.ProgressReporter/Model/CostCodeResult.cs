@@ -13,6 +13,7 @@ namespace Estimating.ProgressReporter.Model
 
         //Budgeted Hours
         public double BudgetedHours { get; set; } = 0;
+        public double ProjectedHours { get; set; } = 0;
         //Earned hours are the budgeted hours from the Estimating sheet?
         public double EarnedHours { get; set; }
         //Actual hours are the billed hours read from the SPECTRUM (or Powertrack) table.
@@ -28,6 +29,15 @@ namespace Estimating.ProgressReporter.Model
         }
 
         public CostCodeProjectionStatus ProjectionStatus { get; set; }
+
+
+
+
+
+
+
+
+
 
         public bool IsWorkCompleted { get; set; }
         //EarnedActualRatio represents the ratio of "Earned/Actual" hours, which should be distinguished from "Percent Complete"

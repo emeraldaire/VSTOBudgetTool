@@ -191,7 +191,7 @@ namespace Estimating.VSTO
                 }
                 else
                 {
-                    MessageBox.Show("There is already a saved estimate for this job number.");
+                    MessageBox.Show("Sorry, but an estimate for this job already exists.");
                 }
             }
         }

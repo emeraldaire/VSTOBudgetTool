@@ -55,5 +55,16 @@ namespace Estimating.ProgressReporter.Properties {
                 return ((string)(this["Estimating_Dev"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ADEAI-ALT\\TRIMBLE;Initial Catalog=Estimate_Dev;Integrated Security=Fa" +
+            "lse\r\n;Connect Timeout=10;Encrypt=False;TrustServerCertificate=False;ApplicationI" +
+            "ntent=ReadWrite;MultiSubnetFailover=False")]
+        public string TimeoutTest {
+            get {
+                return ((string)(this["TimeoutTest"]));
+            }
+        }
     }
 }
