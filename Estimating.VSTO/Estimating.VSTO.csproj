@@ -183,6 +183,12 @@
     <Compile Include="Helpers\CSVHelper.cs" />
     <Compile Include="Helpers\EstimateHelper.cs" />
     <Compile Include="Helpers\JobNumberValidation.cs" />
+    <Compile Include="ImportWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportWizard.Designer.cs">
+      <DependentUpon>ImportWizard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

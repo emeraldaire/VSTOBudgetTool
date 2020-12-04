@@ -35,9 +35,17 @@ namespace Estimating.VSTO
         /// <param name="e"></param>
         private void btnImportFieldReport_Click(object sender, RibbonControlEventArgs e)
         {
+            RunFieldReport();
+        }
+
+        /// <summary>
+        /// Manages the field report import and processing functions.
+        /// </summary>
+        private void RunFieldReport()
+        {
             //Validate and assign the job number before opening the file dialog window.  Validation is 
             //performed by the JobNumberValidation object upon instantiation. 
-            JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text, IsSaveOperation:false);
+            JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text, IsSaveOperation: false);
 
             if (validationControl.IsValidJobNumber && validationControl.HasEstimateData(validationControl.ValidationResult))
             {
@@ -78,7 +86,7 @@ namespace Estimating.VSTO
                         //3.  DISPLAY THE PREFERRED DATA FROM THE REPORT OBJECT.
                         //Send the report object to the data display service.
                         DataDisplayService dataDisplayService = new DataDisplayService();
-                        dataDisplayService.DisplayCostCodeReport(costCodeReport); 
+                        dataDisplayService.DisplayCostCodeReport(costCodeReport);
                     }
                     else
                     {
@@ -86,12 +94,13 @@ namespace Estimating.VSTO
                         throw new Exception("Reporting service returned a blank or null system report list to the Main program without throwing a validation error.  Please check the CSVHelper class to make sure that type conversions are working properly.");
                     }
 
-                } 
+                }
             }
             else
             {
                 //throw new Exception("Validation Failed");
             }
+
 
         }
 
@@ -137,15 +146,22 @@ namespace Estimating.VSTO
         /// <param name="e"></param>
         private void btnSaveEstimateToDatabase_Click(object sender, RibbonControlEventArgs e)
         {
+            RecordEstimateToDatabase();
+        }
 
+        /// <summary>
+        /// Processes the estimate data and saves it to the database.
+        /// </summary>
+        private void RecordEstimateToDatabase()
+        {
             //Validate and assign the job number before opening the file dialog window.  Validation is 
             //performed by the JobNumberValidation object upon instantiation. 
-            JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text, IsSaveOperation:true);
+            JobNumberValidation validationControl = new JobNumberValidation(txtJobNumber.Text, IsSaveOperation: true);
 
             if (validationControl.IsValidJobNumber)
             {
 
-                if(!validationControl.IsDuplicateEstimate)
+                if (!validationControl.IsDuplicateEstimate)
                 {
                     EstimateHelper estimateHelper = new EstimateHelper(Globals.ThisAddIn.Application);
                     //Try to activate the 'Main Form' tab of the Estimate sheet.  If the attempt is successful, then the process for saving estimate data 
@@ -171,15 +187,15 @@ namespace Estimating.VSTO
                     else
                     {
                         MessageBox.Show("To save Estimate data, the user must have the Estimate workbook open and be on the 'MainForm' tab.");
-                    }  
+                    }
                 }
                 else
                 {
                     MessageBox.Show("There is already a saved estimate for this job number.");
                 }
             }
-
         }
+
 
 
         #region "Dummy Code"

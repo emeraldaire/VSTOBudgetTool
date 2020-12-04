@@ -128,7 +128,8 @@ namespace Estimating.ProgressReporter.Services
             sql.AddParam("@phaseCode", phaseCode);
             sql.AddParam("@costType", "L");
             //sql.AddParam("@costType", "L");
-            sql.ExecQuery("SELECT TOP(1) Original_Est_Hours FROM JC_PHASE_MASTER_MC WHERE Phase_Code = @phaseCode AND Job_Number = @jobNumber AND Cost_Type = @costType");
+            //sql.ExecQuery("SELECT TOP(1) Original_Est_Hours FROM JC_PHASE_MASTER_MC WHERE Phase_Code = @phaseCode AND Job_Number = @jobNumber AND Cost_Type = @costType");
+            sql.ExecQuery("SELECT TOP(1) Projected_Hours FROM JC_PROJ_COST_HISTORY_MC WHERE Phase = @phaseCode AND Job = @jobNumber AND Cost_Type = @costType");
 
             //sql.ExecQuery("SELECT * FROM EstimateMain");
             if (sql.HasException())
