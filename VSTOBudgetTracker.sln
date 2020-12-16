@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estimating.VSTO", "Estimati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Estimating.CSVHandler", "Estimating.CSVHandler\Estimating.CSVHandler.csproj", "{37F21A16-E43A-42DC-8455-D3BD2FB2B2FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jumble.ExternalCacheManager", "..\grabber-framework\Jumble.ExternalCacheManager\Jumble.ExternalCacheManager.csproj", "{91029C25-7C46-4096-9CD2-FA501DDDC4A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOM.BudgetVSTO", "..\grabber-framework\SOM.BudgetVSTO\SOM.BudgetVSTO.csproj", "{FFBF451F-040C-47AD-95D7-7DF90E0454E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{37F21A16-E43A-42DC-8455-D3BD2FB2B2FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37F21A16-E43A-42DC-8455-D3BD2FB2B2FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37F21A16-E43A-42DC-8455-D3BD2FB2B2FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91029C25-7C46-4096-9CD2-FA501DDDC4A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91029C25-7C46-4096-9CD2-FA501DDDC4A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91029C25-7C46-4096-9CD2-FA501DDDC4A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91029C25-7C46-4096-9CD2-FA501DDDC4A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFBF451F-040C-47AD-95D7-7DF90E0454E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFBF451F-040C-47AD-95D7-7DF90E0454E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFBF451F-040C-47AD-95D7-7DF90E0454E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFBF451F-040C-47AD-95D7-7DF90E0454E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

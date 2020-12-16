@@ -1,5 +1,6 @@
 ﻿using Estimating.ProgressReporter.Enums;
 using Estimating.ProgressReporter.Services;
+using SOM.BudgetVSTO.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace Estimating.ProgressReporter.Model
     public class CostCodeReport
     {
         private string _jobNumber;
+        private BudgetDataProvider _dataProvider; 
+
         private CostCodeDataService _costCodeDataService;
         private ReportModel _reportModel;
        // private Dictionary<string, SystemReport> _reportedSystemsDictionary;
@@ -28,9 +31,10 @@ namespace Estimating.ProgressReporter.Model
         
 
         //CONSTRUCTOR
-        public CostCodeReport(string jobNumber, ReportModel ReportModel)
+        public CostCodeReport(string jobNumber, ReportModel ReportModel, BudgetDataProvider dataProvider)
         {
             _jobNumber = jobNumber;
+            _dataProvider = dataProvider;
             _reportModel = ReportModel;
            // _reportedSystemsDictionary = _reportModel.Systems.ToDictionary(p => p.Name, p => p);
         }
@@ -45,9 +49,9 @@ namespace Estimating.ProgressReporter.Model
         /// </summary>
         /// <remarks>
         /// </remarks>
-        public void GenerateCostCodeReport()
+        public void Generate()
         {
-            _costCodeDataService = new CostCodeDataService(_jobNumber);
+            _costCodeDataService = new CostCodeDataService(_jobNumber, _dataProvider);
             List<string> reportedPhaseCodes = new List<string>();
             List<PhaseCode> phaseCodeInstance = new List<PhaseCode>();
 
@@ -113,7 +117,7 @@ namespace Estimating.ProgressReporter.Model
                 }
                 else
                 {
-                    throw new Exception("The list of reported phase codes failed to populate.  Please reference CostCodeReport.GenerateCostCodeReport() for more information.");
+                    throw new Exception("The list of reported phase codes failed to populate.  Please reference CostCodeReport.Generate() for more information.");
                 }
 
                 //SUM THE EARNED HOURS 

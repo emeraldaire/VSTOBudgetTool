@@ -2,6 +2,7 @@
 using Estimating.ProgressReporter.Interfaces.Model;
 using Estimating.ProgressReporter.Interfaces.Services;
 using Estimating.ProgressReporter.Model;
+using SOM.BudgetVSTO.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,29 +17,37 @@ namespace Estimating.ProgressReporter.Services
     {
         private EstimateModel _estimateModel { get; set; }
         private ReportModel _reportModel { get; set; }
+        private BudgetDataProvider _dataProvider { get; set; }
 
         private ComparatorReport ModelReport { get; set; }
         private CostCodeReport CostCodeReport { get; set; }
 
         //CONSTRUCTOR
-        public static ModelReportingService LoadModelReportingService(EstimateModel estimateModel, ReportModel reportModel)
+        public static ModelReportingService LoadModelReportingService(EstimateModel estimateModel, ReportModel reportModel, BudgetDataProvider dataProvider)
         {
             ModelReportingService modelReportingService = new ModelReportingService();
 
             modelReportingService._reportModel = reportModel;
             modelReportingService._estimateModel = estimateModel;
+            modelReportingService._dataProvider = dataProvider;
+
             try
-            { modelReportingService.GenerateModelReport(); }
+            { 
+                modelReportingService.GenerateModelReport(); 
+            }
             catch(Exception e)
-            { Console.WriteLine(e.Message); }
+            { 
+                Console.WriteLine(e.Message); 
+            }
 
             return modelReportingService;
 
         }
 
-        public ModelReportingService(ReportModel reportModel)
+        public ModelReportingService(ReportModel reportModel, BudgetDataProvider dataProvider)
         {
             _reportModel = reportModel;
+            _dataProvider = dataProvider;
         }
         public ModelReportingService()
         {
@@ -53,15 +62,18 @@ namespace Estimating.ProgressReporter.Services
         /// <returns></returns>
         private void GenerateModelReport()
         {
-            try
-            {   
-                ComparatorReport comparatorReport = new ComparatorReport(_estimateModel, _reportModel);
-                comparatorReport.GenerateSystemReport();
-                ModelReport = comparatorReport;
-            }
-            catch (Exception e)
+            if ( _estimateModel != null && _reportModel != null)
             {
-                throw new Exception(e.Message);
+                try
+                {
+                    ComparatorReport comparatorReport = new ComparatorReport(_estimateModel, _reportModel);
+                    comparatorReport.GenerateSystemReport();
+                    ModelReport = comparatorReport;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                } 
             }
         }
 
@@ -71,15 +83,20 @@ namespace Estimating.ProgressReporter.Services
         /// <param name="jobNumber"></param>
         public void GenerateCostCodeReport(string jobNumber)
         {
-            try
+            if (_reportModel != null && _dataProvider != null)
             {
-                CostCodeReport costCodeReport = new CostCodeReport(jobNumber, _reportModel);
-                costCodeReport.GenerateCostCodeReport();
-                CostCodeReport = costCodeReport;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
+
+                try
+                {
+                    CostCodeReport costCodeReport = new CostCodeReport(jobNumber, _reportModel, _dataProvider);
+                    costCodeReport.Generate();
+                    CostCodeReport = costCodeReport;
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
             }
         }
 

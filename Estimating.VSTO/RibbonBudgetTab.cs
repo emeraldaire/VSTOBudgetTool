@@ -13,17 +13,29 @@ using Estimating.VSTO.Reporting;
 using Estimating.VSTO.Helpers;
 using System.Runtime.CompilerServices;
 using Estimating.CSVHandler;
+using SOM.BudgetVSTO.Services;
+using System.Threading.Tasks;
+using SQLManager;
 
 namespace Estimating.VSTO
 {
     public partial class RibbonBudgetTab
     {
+        private BudgetDataProvider _dataProvider { get; set; }
+        //public bool CacheWasLoaded { get; set; } = false;
+        
         private void RibbonBudgetTab_Load(object sender, RibbonUIEventArgs e)
         {
             btnSaveCompletedReport.Visible = false;
-            //Do nothing
-        }
+            _dataProvider = new BudgetDataProvider();
+            Task.Run(() =>
+            {
+                _dataProvider.LoadData();
+                _dataProvider.UsingExternalCache = ProbeSpectrumDatabase();
+            });
 
+       
+        }
         /// <summary>
         /// Opens a file dialog window for the user to select the CSV Field Report that will be processed.
         /// </summary>
@@ -76,7 +88,7 @@ namespace Estimating.VSTO
                         //2.  USE THE CLIENT REPORT SERVICE TO RUN AND RETURN THE REPORT OBJECT.
                         //Note:  To get this far, the field report must have already been validated and processed into a List of SystemReport objects. 
                         //Create the report service. 
-                        ClientReportService clientReportService = new ClientReportService(jobNumber);
+                        ClientReportService clientReportService = new ClientReportService(jobNumber, _dataProvider);
                         //Send the field report system list to the report service to generate the full summary report object.  
                         //ComparatorReport finishedReport = clientReportService.GetReportSummary(reportedSystems);
                         CostCodeReport costCodeReport = clientReportService.GetCostCodeReportSummary(reportedSystems);
@@ -193,6 +205,26 @@ namespace Estimating.VSTO
                 {
                     MessageBox.Show("Sorry, but an estimate for this job already exists.");
                 }
+            }
+        }
+
+
+        private bool ProbeSpectrumDatabase()
+        {
+            string spectrumDatabaseString = ConnectionStringService.GetConnectionString("Spectrum");
+            SQLControl sql = new SQLControl(spectrumDatabaseString);
+            
+            //sql.AddParam("@jobNumber", _jobNumber);
+        
+            //sql.AddParam("@costType", "L");
+            sql.ExecQuery("SELECT * FROM JC_TRANSACTION_HISTORY_MC WHERE Job_Number = '   2190302'");
+            if (sql.HasException())
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 

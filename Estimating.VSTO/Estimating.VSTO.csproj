@@ -125,6 +125,10 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="SQLManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Estimating.ProgressReporter\SQLManager.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -239,6 +243,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\grabber-framework\SOM.BudgetVSTO\SOM.BudgetVSTO.csproj">
+      <Project>{ffbf451f-040c-47ad-95d7-7df90e0454e7}</Project>
+      <Name>SOM.BudgetVSTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Estimating.CSVHandler\Estimating.CSVHandler.csproj">
       <Project>{37F21A16-E43A-42DC-8455-D3BD2FB2B2FA}</Project>
       <Name>Estimating.CSVHandler</Name>
@@ -262,7 +270,7 @@
     <ManifestKeyFile>Estimating.VSTO_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2ED23CAED7B87DF62DB945C7BC3E466F20D29CBC</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>C498C3B70CAC02927D85B7A064875959DB49B273</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

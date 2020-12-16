@@ -88,7 +88,9 @@
     <Compile Include="Services\EstimateDataService.cs" />
     <Compile Include="Services\EstimateModelService.cs" />
     <Compile Include="Services\EstimateRecordingService.cs" />
+    <Compile Include="Services\ExternalCacheService.cs" />
     <Compile Include="Services\IEstimateDataService.cs" />
+    <Compile Include="Services\IExternalCacheService.cs" />
     <Compile Include="Services\IModelReportingService.cs" />
     <Compile Include="Services\IReportDataService.cs" />
     <Compile Include="Services\ModelReportingService.cs" />
@@ -101,6 +103,16 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\grabber-framework\Jumble.ExternalCacheManager\Jumble.ExternalCacheManager.csproj">
+      <Project>{91029c25-7c46-4096-9cd2-fa501dddc4a8}</Project>
+      <Name>Jumble.ExternalCacheManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\grabber-framework\SOM.BudgetVSTO\SOM.BudgetVSTO.csproj">
+      <Project>{ffbf451f-040c-47ad-95d7-7df90e0454e7}</Project>
+      <Name>SOM.BudgetVSTO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

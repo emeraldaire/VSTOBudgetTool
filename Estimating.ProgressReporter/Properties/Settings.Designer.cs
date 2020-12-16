@@ -12,7 +12,7 @@ namespace Estimating.ProgressReporter.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -36,17 +36,6 @@ namespace Estimating.ProgressReporter.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=SPECTRUM;Integrated Security=True;Connect Timeout=30;Encrypt=False;Tr" +
-            "ustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" +
-            "")]
-        public string SPECTRUM {
-            get {
-                return ((string)(this["SPECTRUM"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ADEAI-ALT\\TRIMBLE;Initial Catalog=Estimate_Dev;Integrated Security=Tr" +
             "ue;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationInte" +
             "nt=ReadWrite;MultiSubnetFailover=False")]
@@ -64,6 +53,16 @@ namespace Estimating.ProgressReporter.Properties {
         public string TimeoutTest {
             get {
                 return ((string)(this["TimeoutTest"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=RECTUM;Integrated Security=True;Connect Timeout=10;Encrypt=False;Trus" +
+            "tServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")]
+        public string SPECTRUM {
+            get {
+                return ((string)(this["SPECTRUM"]));
             }
         }
     }

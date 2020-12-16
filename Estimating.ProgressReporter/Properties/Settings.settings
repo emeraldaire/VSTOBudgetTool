@@ -5,15 +5,15 @@
     <Setting Name="Estimate" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Data Source=ADEAI-ALT\TRIMBLE;Initial Catalog=BudgetVSTO;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</Value>
     </Setting>
-    <Setting Name="SPECTRUM" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=SPECTRUM;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</Value>
-    </Setting>
     <Setting Name="Estimating_Dev" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Data Source=ADEAI-ALT\TRIMBLE;Initial Catalog=Estimate_Dev;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</Value>
     </Setting>
     <Setting Name="TimeoutTest" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Data Source=ADEAI-ALT\TRIMBLE;Initial Catalog=Estimate_Dev;Integrated Security=False
 ;Connect Timeout=10;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</Value>
+    </Setting>
+    <Setting Name="SPECTRUM" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Data Source=RECTUM;Integrated Security=True;Connect Timeout=10;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
